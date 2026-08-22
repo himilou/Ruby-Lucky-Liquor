@@ -1,0 +1,4 @@
+0 9,21 * * * cd /home/himilou/Source/ruby/lucky && bin/rails images:sync_from_google_drive >> log/google_drive_sync.log 2>&1
+
+manual command 
+0 9,21 * * * cd /home/himilou/Source/ruby/lucky && bin/rails images:sync_from_google_drive >> log/google_drive_sync.log 2>&1

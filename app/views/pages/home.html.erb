@@ -1,0 +1,20 @@
+<% content_for :title, "Lucky Liquor | South Seattle Dive Bar" %>
+
+<section class="hero">
+  <div class="hero-copy">
+    <h1>Keeping Dive Alive</h1>
+    <p class="tagline">Stiff Drinks | Pull Tabs | Live Music</p>
+
+    <ul class="hours" aria-label="Operating hours">
+      <% @hours.each do |hour| %>
+        <li><%= hour %></li>
+      <% end %>
+    </ul>
+
+    <p class="location">Tukwila, WA</p>
+  </div>
+
+  <div class="hero-photo">
+    <%= image_tag "old_front_photo.jpg", alt: "Lucky Liquor storefront" %>
+  </div>
+</section>

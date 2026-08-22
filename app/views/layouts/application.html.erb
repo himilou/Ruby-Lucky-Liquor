@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Lucky Liquor | South Seattle Dive Bar" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="description" content="South Seattle dive bar right on the Duwamish river across from the Museum of Flight. Stiff drinks, live music, pinball, and good company guaranteed.">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= yield :head %>
+  </head>
+
+  <body>
+    <div class="page-shell">
+      <header class="site-header">
+        <div class="brand-wrap">
+          <%= link_to root_path, class: "brand-link" do %>
+            <%= image_tag "lucky_logo.jpg", alt: "Lucky Liquor logo", class: "brand-image" %>
+          <% end %>
+        </div>
+
+        <nav class="main-nav" aria-label="Main navigation">
+          <%= link_to "Home", root_path, class: nav_link_class("home") %>
+          <%= link_to "Events", events_path, class: nav_link_class("events") %>
+          <%= link_to "Menu", menu_path, class: nav_link_class("menu") %>
+          <%= link_to "Press", press_path, class: nav_link_class("press") %>
+          <%= link_to "About", about_path, class: nav_link_class("about") %>
+          <%= link_to "Contact", contact_path, class: nav_link_class("contact") %>
+          <%= link_to "Gallery", gallery_path, class: nav_link_class("gallery") %>
+        </nav>
+      </header>
+
+      <main class="site-main">
+        <%= yield %>
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-grid">
+          <div class="footer-address">
+            <h3>Lucky Liquor</h3>
+            <p>10325 East Marginal Way South,<br>Seattle, WA, 98168,<br>United States</p>
+            <p><%= link_to "(206) 673-4081", "tel:(206) 673-4081" %></p>
+            <p><%= mail_to "luckyliquorbooking@gmail.com" %></p>
+          </div>
+
+          <div class="footer-review">
+            <%= link_to "Click to leave us a review on Google", "https://g.page/r/CU-J57yBLEZ6EBM/review", target: "_blank", rel: "noopener" %>
+          </div>
+
+          <div class="footer-social">
+            <%= link_to "https://facebook.com/luckyliquortavern", target: "_blank", rel: "noopener" do %>
+              <%= image_tag "facebook.ico", alt: "Facebook", width: 32, height: 32 %>
+            <% end %>
+            <%= link_to "https://instagram.com/lucky_liquor", target: "_blank", rel: "noopener" do %>
+              <%= image_tag "instagram.png", alt: "Instagram", width: 32, height: 32 %>
+            <% end %>
+          </div>
+        </div>
+        <div class="footer-credit">Powered by DIY</div>
+      </footer>
+    </div>
+  </body>
+</html>
