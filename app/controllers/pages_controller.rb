@@ -13,9 +13,6 @@ class PagesController < ApplicationController
     ]
   end
 
-  def events
-  end
-
   def menu
   end
 

@@ -1,0 +1,14 @@
+<% content_for :title, "Event Image | Lucky Liquor" %>
+
+<section class="content-page full-size-event-wrap">
+  <%= link_to "← Back to Events", events_path, class: "event-back-link" %>
+
+  <div class="event-full-meta">
+    <p class="event-full-date"><%= @event_date %></p>
+    <h2 class="event-full-band"><%= @event_bandname %></h2>
+  </div>
+
+  <div class="image-page-frame">
+    <%= image_tag @image_path, alt: @image_name, class: "full-size-event-image" %>
+  </div>
+</section>

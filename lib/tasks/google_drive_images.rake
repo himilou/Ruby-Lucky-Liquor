@@ -14,9 +14,12 @@ namespace :images do
     file_entries = fetch_google_drive_entries(folder_id)
     downloaded_names = downloaded_event_names(target_dir)
     file_entries = file_entries.reject { |entry| downloaded_names.include?(sanitize_drive_image_name(entry[:name])) }
+    # Stop teh autopromotix file from downloading
+    file_entries = file_entries.reject { |entry| entry[:name].downcase.include?("autopromo".downcase) }
 
     if file_entries.empty?
       puts "No new image files to download. Already synced from events.json."
+      Rails.logger.info "Image_downloader: No new image files to download. Already synced from events.json."
       return
     end
 
@@ -51,6 +54,7 @@ namespace :images do
     index_file.write(next_index.to_s)
 
     puts "Downloaded #{downloaded_count} image(s) from Google Drive. Next index: #{next_index}"
+    Rails.logger.info "Image_downloader: Downloaded #{downloaded_count} image(s) from Google Drive. Next index: #{next_index}"
   end
 
   def fetch_google_drive_entries(folder_id)
@@ -60,6 +64,7 @@ namespace :images do
       html = URI.open(folder_url, "User-Agent" => "Mozilla/5.0", read_timeout: 30, open_timeout: 30).read
     rescue OpenURI::HTTPError, Net::ReadTimeout, Timeout::Error, SocketError, Errno::ECONNRESET => e
       puts "Could not fetch Google Drive folder listing: #{e.class} - #{e.message}"
+      Rails.logger.warn "Image_downloader: Could not fetch Google Drive folder listing: #{e.class} - #{e.message}"
       return []
     end
 
@@ -102,6 +107,7 @@ namespace :images do
       file = URI.open(download_url, "User-Agent" => "Mozilla/5.0", read_timeout: 30, open_timeout: 30)
     rescue OpenURI::HTTPError, Net::ReadTimeout, SocketError, Errno::ECONNRESET => e
       puts "Skipping #{file_id}: #{e.class} - #{e.message}"
+      Rails.logger.warn "Image_downloader: Skipping #{file_id}: #{e.class} - #{e.message}"
       return false
     end
 

@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   root "pages#home"
 
-  get "events", to: "pages#events"
+  get "events", to: "events#events"
+  get "events/image", to: "events#image", as: :events_image
   get "menu", to: "pages#menu"
   get "press", to: "pages#press"
   get "about", to: "pages#about"
