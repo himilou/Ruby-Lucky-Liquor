@@ -3,9 +3,21 @@
 <section class="content-page">
   <div class="section-block">
     <h1>Events</h1>
-    <p>Lucky Liquor keeps the good times rolling with live music, neighborhood gatherings, and late-night diveside energy.</p>
-
-    <div class="info-grid">
+      <div class="info-grid">
+      <% @event_list.each do |evt| %>
+        <article class="info-card">
+          <p class="event-date"><%= evt.date %></p>
+          <%= link_to events_image_path(filename: evt.filename), target: "_blank", rel: "noopener", class: "event-image-link" do %>
+            <%= image_tag "event_img/#{evt.filename}", alt: evt.bandname, class: "event-image" %>
+          <% end %>
+          <h5><%= evt.bandname %></h5>
+        </article>
+      <% end %>
+    </div>
+  </div>
+  <p class="center-text">Lucky Liquor keeps the good times rolling with live music, neighborhood gatherings, and late-night diveside energy.</p>
+  
+  <div class="info-grid">
       <article class="info-card">
         <h3>Live Music</h3>
         <p>Catch local bands, rotating acts, and community favorites every week in a room built for sound and good company.</p>
@@ -19,5 +31,4 @@
         <p>Friendly staff, friendly regulars, and a laid-back Seattle dive vibe that feels like home.</p>
       </article>
     </div>
-  </div>
 </section>
