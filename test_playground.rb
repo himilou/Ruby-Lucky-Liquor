@@ -4,7 +4,7 @@
  require 'pathname'
  require 'rails'
 
-
+ # ruby file to test code outside of framework
 
  class EventDetail
     # Simple ruby object that is used to pass information from the eventc ontroller to the event view
