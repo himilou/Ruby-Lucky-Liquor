@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_08_29_184640) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_01_000000) do
   create_table "product_images", force: :cascade do |t|
-    t.string "product_image_url"
+    t.string "image_filename"
     t.boolean "is_primary"
     t.string "alt_text"
     t.integer "product_id", null: false

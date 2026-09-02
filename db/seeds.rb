@@ -44,7 +44,7 @@ def create_image
   return unless plain_t_path.exist?
 
   ProductImage.find_or_create_by!(product_id: product.id) do |image|
-    image.product_image_url = plain_t_path.to_s
+    image.image_filename = "plain_t.jpeg"
     image.is_primary = true
     image.alt_text = "plain black tee"
   end
