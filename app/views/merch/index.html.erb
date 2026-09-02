@@ -10,7 +10,7 @@
       <% @Products.each do |product| %>
         <article class="info-card">
 
-            <% image_name = product.product_image&.image_filename.presence || "lucky_logo.jpg" %>
+            <% image_name = product.primary_image&.image_filename.presence || "image_not_available.png" %>
             <%= link_to merch_show_path(id: product.id), target: "_blank", rel: "noopener", class: "event-image-link" do%>           
             <%= image_tag image_name, alt: product.product_name, class: "event-image" %>
             <% end %>
@@ -20,7 +20,7 @@
       <% end %>
     </div>
   </div>
-  <p class="center-text">Quality Tshirts from Lucky to You!</p>
+  <p class="center-text">Quality t-shirts from Lucky to You!</p>
   
   <div class="info-grid">
       <article class="info-card">
