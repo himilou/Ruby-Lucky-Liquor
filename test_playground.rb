@@ -47,3 +47,9 @@ list = events
 list.each do |evt|
   puts evt.bandnames
 end
+
+
+
+# scratch file
+# <%= link_to events_image_path(filename: evt.filename), target: "_blank", rel: "noopener", class: "event-image-link" do %>
+#            <%= image_tag "event_img/#{evt.filename}", alt: evt.bandname, class: "event-image" %>

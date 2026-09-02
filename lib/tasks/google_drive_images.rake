@@ -14,7 +14,7 @@ namespace :images do
     file_entries = fetch_google_drive_entries(folder_id)
     downloaded_names = downloaded_event_names(target_dir)
     file_entries = file_entries.reject { |entry| downloaded_names.include?(sanitize_drive_image_name(entry[:name])) }
-    # Stop teh autopromotix file from downloading
+    # Stop the autopromotix file from downloading
     file_entries = file_entries.reject { |entry| entry[:name].downcase.include?("autopromo".downcase) }
 
     if file_entries.empty?
@@ -83,6 +83,9 @@ namespace :images do
     name = name.gsub(/[<>:"\/\\|?*]+/, "_")
     name = name.gsub(/\s+/, " ")
     name = name.empty? ? "drive_image" : name
+    if name == "drive_image"
+      Rails.logger.info "Image_downloader: file name issue with title '#{title}'"
+    end
     name
   end
 
