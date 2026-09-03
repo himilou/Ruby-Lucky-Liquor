@@ -2,8 +2,11 @@ Rails.application.routes.draw do
   get "merch", to: "merch#index"
   get "merch/index"
   get "merch/show"
+  get "merch/new"
+  post "merch/create", as: :merch_create
   get "merch/update"
   get "merch/destroy"
+
   root "pages#home"
 
   get "events", to: "events#events"

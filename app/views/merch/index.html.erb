@@ -9,10 +9,8 @@
       <div class="info-grid">
       <% @Products.each do |product| %>
         <article class="info-card">
-
-            <% image_name = product.primary_image&.image_filename.presence || "image_not_available.png" %>
             <%= link_to merch_show_path(id: product.id), target: "_blank", rel: "noopener", class: "event-image-link" do%>           
-            <%= image_tag image_name, alt: product.product_name, class: "event-image" %>
+            <%= image_tag product.images.first || "lucky_logo.jpg", alt: product.product_name, class: "event-image" %>
             <% end %>
           <h5><%= product.product_name %></h5>
           <p><%= product.product_desc %></p>
