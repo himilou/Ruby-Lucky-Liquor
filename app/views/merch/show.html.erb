@@ -4,6 +4,6 @@
 
 <h3> we got :<%=@hello%> </h3>
 
-<% @Product.images.each do |image| %>
-	<%= image_tag image, alt: @Product.product_name, class: "event-image" %>
+<% @Product.product_images.each do |image| %>
+	<%= image_tag image.file, alt: @Product.product_name, class: "event-image" %>
 <% end %>

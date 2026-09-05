@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_03_030000) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_04_030000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -42,11 +42,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_03_030000) do
   create_table "product_images", force: :cascade do |t|
     t.boolean "is_primary"
     t.string "alt_text"
-    t.integer "active_storage_attachments_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "product_id", null: false
-    t.index ["active_storage_attachments_id"], name: "index_product_images_on_active_storage_attachments_id", unique: true
     t.index ["product_id"], name: "index_product_images_on_product_id"
   end
 
