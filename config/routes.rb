@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
-  get "merch", to: "merch#index"
-  get "merch/index"
-  get "merch/show"
-  get "merch/new"
-  post "merch/create", as: :merch_create
-  get "merch/update"
-  get "merch/destroy"
+  get "products", to: "products#index"
+  get "products/index"
+  get "products/show"
+  get "products/new"
+  post "products/create", as: :products_create
+  get "products/edit", as: :products_edit
+  patch "products/update", as: :products_update
+  delete "products/destroy", as: :products_destroy
 
   root "pages#home"
 

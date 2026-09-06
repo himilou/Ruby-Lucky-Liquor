@@ -1,0 +1,136 @@
+<h1>Merch#update</h1>
+<p>Find me in app/views/products/update.html.erb</p>
+
+
+ <% content_for :title, "Mechandise | Lucky Liquor" %>
+
+<section class="content-page">
+  <div class="section-block">
+	<div class="center-text">
+    	<h1>Merchandise</h1>
+	</div>
+    <% if notice %>
+        <p class="notice"><%= notice %></p>
+    <% end %>
+      <div class="info-grid">
+        <%= form_with(model: @product, url: products_update_path(id: @product.id), method: :patch, local: true, multipart: true) do |f| %>
+            <% if @product.errors.any? %>
+                <div id="error_explanation">
+                <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+                <ul>
+                    <% @product.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                    <% end %>
+                </ul>
+                </div>
+            <% end %>
+
+        <!-- Product Fields -->
+        <div>
+            <%= f.label :product_name %><br/>
+            <%= f.text_field :product_name %>
+        </div>
+
+        <div>
+            <%= f.label :product_desc %><br/>
+            <%= f.text_area :product_desc %>
+        </div>
+
+        <!-- Product sizes -->
+        <div>
+            <h3>Size Details</h3>
+            <%= f.fields_for :product_sizes do |size_form| %>
+                <% details_id = "product_size_details_#{size_form.index}" %>
+                <div>
+                <%= size_form.hidden_field :size_id %>
+                    <%= check_box_tag "size_available_#{size_form.index}", "1", size_form.object.persisted?, id: "size_available_#{size_form.index}", data: { size_toggle: details_id } %>
+                    <%= label_tag "size_available_#{size_form.index}", size_form.object.size.size %>
+                    <div id="<%= details_id %>" data-size-details>
+                            <%= size_form.hidden_field :_destroy, value: (size_form.object.persisted? ? "0" : "1"), data: { size_destroy: true } %>
+                            <%= size_form.text_field :sku, placeholder: "SKU" %>
+                            <%= size_form.number_field :price, step: 0.01, min: 0, placeholder: "Price" %>
+                            <%= size_form.number_field :stock_level, min: 0, placeholder: "Stock level" %>
+                    </div>
+            </div>
+            <% end %>
+        </div>
+
+                <script>
+                    document.querySelectorAll("[data-size-toggle]").forEach((toggle) => {
+                        const details = document.getElementById(toggle.dataset.sizeToggle);
+                        const destroy = details.querySelector("[data-size-destroy]");
+
+                        const syncSizeDetails = () => {
+                            details.hidden = !toggle.checked;
+                            destroy.value = toggle.checked ? "0" : "1";
+                        };
+
+                        toggle.addEventListener("change", syncSizeDetails);
+                        syncSizeDetails();
+                    });
+                </script>
+
+        <!-- Product Images (One-to-Many Nested Fields) -->
+        <div>
+            <h3>Product Images</h3>
+            <div class="info-grid">
+                <%= f.fields_for :product_images do |image_form| %>
+                    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                        <!-- If the image already exists in the database, show a preview -->
+                        <article class="info-card">
+                        <% image_file = image_form.object.file&.attached? ? image_form.object.file : "lucky_logo.jpg" %>
+                        <%= image_tag image_file, alt: image_form.object.alt_text, class: "event-image" %>
+                        
+                        <div>
+                            <%# 1. Generate a unique ID for the label to match the radio button %>
+                            <% radio_id = "primary_image_#{image_form.index}" %>
+                            <%= label_tag radio_id, "Set as Primary Image?" %>
+                            
+                            <%# 2. Override the name attribute to a global parameter %>
+                            <%= radio_button_tag "product[primary_image_id]", image_form.object.id, image_form.object.is_primary?, id: radio_id %>
+                        </div>
+                        </article>
+                        
+                        <div>
+                        <%= image_form.check_box :_destroy %>
+                        <%= image_form.label :_destroy, "Delete this image" %>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                <% end %>
+               
+            </div>
+        </div>
+        <div>
+            <%= label_tag "product_images", "Product Images" %><br/>
+            <%= file_field_tag "product[images][]", multiple: true, accept: "image/png, image/jpeg, image/jpg", id: "product_images" %>
+        </div>    
+        <div>
+            <br/>
+            <%= f.submit %>
+        </div>
+        </div>
+        <% end %>
+         </div>
+  </div>
+
+
+  <p class="center-text">Quality t-shirts from Lucky to You!</p>
+  
+  <div class="info-grid">
+      <article class="info-card">
+        <h3>Live Music</h3>
+        <p>Catch local bands, rotating acts, and community favorites every week in a room built for sound and good company.</p>
+      </article>
+      <article class="info-card">
+        <h3>Pull Tabs</h3>
+        <p>Classic bar charm with the quick-hit fun that keeps the whole room buzzing.</p>
+      </article>
+      <article class="info-card">
+        <h3>Atmosphere</h3>
+        <p>Friendly staff, friendly regulars, and a laid-back Seattle dive vibe that feels like home.</p>
+      </article>
+    </div>
+</section>
+

@@ -1,9 +1,0 @@
-<h1>Merch#show</h1>
-<p>Find me in app/views/merch/show.html.erb</p>
-
-
-<h3> we got :<%=@hello%> </h3>
-
-<% @Product.product_images.each do |image| %>
-	<%= image_tag image.file, alt: @Product.product_name, class: "event-image" %>
-<% end %>

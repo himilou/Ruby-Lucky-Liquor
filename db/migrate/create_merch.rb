@@ -2,7 +2,7 @@
 
 
 
-# db migration table for the merchandise modesl
+# db migration table for the products models
 #
 class CreateProducts < ActiveRecord::Migration[8.0]
   def change

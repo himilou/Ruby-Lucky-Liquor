@@ -37,7 +37,7 @@ end
 
 
 def create_image
-  plain_t_path = Rails.root.join("app/assets/images/merch/plain_t.jpeg")
+  plain_t_path = Rails.root.join("app/assets/images/products/plain_t.jpeg")
   product = Product.find_by(product_name: "Lucky plain T")
 
   return unless product
@@ -86,7 +86,7 @@ def clear_tables
   Size.destroy_all
   ProductImage.destroy_all
   ProductSize.destroy_all
-  puts "All merchandise tables cleared"
+  puts "All products tables cleared"
 end
 
 create_basic_items
