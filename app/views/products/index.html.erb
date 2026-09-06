@@ -7,12 +7,12 @@
   <div class="section-block">
     <h1>Merchandise</h1>
       <div class="info-grid">
-      <% @Products.each do |product| %>
+      <% @products.each do |product| %>
         <article class="info-card">
-
-            <% image_name = product.primary_image&.image_filename.presence || "image_not_available.png" %>
-            <%= link_to merch_show_path(id: product.id), target: "_blank", rel: "noopener", class: "event-image-link" do%>           
-            <%= image_tag image_name, alt: product.product_name, class: "event-image" %>
+            <%= link_to products_show_path(id: product.id), target: "_blank", rel: "noopener", class: "event-image-link" do%>
+            <!-- Find the primary image or fall back to the lucky logo image -->
+            <% primary_img = product.primary_image&.file&.attached? ? product.primary_image.file : "lucky_logo.jpg" %>
+            <%= image_tag primary_img, alt: product.product_name, class: "event-image" %>
             <% end %>
           <h5><%= product.product_name %></h5>
           <p><%= product.product_desc %></p>

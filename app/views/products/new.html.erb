@@ -1,0 +1,46 @@
+<h2> hello from the products new view </h2>
+
+
+
+<%# app/views/products/_form.html.erb %>
+<%= form_with(model: @product, url: products_create_path, method: :post, multipart: true) do |form| %>
+<!-- Display validation errors if any --> 
+<% if @product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+      <ul>
+        <% @product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <!--end of error display -->
+  <div>
+    <%= form.label :product_name %>
+    <%= form.text_field :product_name %>
+  </div>
+
+  <div>
+    <%= form.label :product_desc, "Description" %>
+    <%= form.text_field :product_desc%>
+  </div>
+
+  <div>
+    <%= form.label :images, "Product Images" %>
+    <%= form.file_field :images, multiple: true, accept: "image/png, image/jpeg, image/jpg" %>
+  </div>
+  <%= fields_for :product_image, @productImage do |product_image_fields| %>
+    <div>
+      <%= product_image_fields.label :alt_text, "text for screen readers" %>
+      <%= product_image_fields.text_field :alt_text %>
+    </div>
+    <div>
+      <%= product_image_fields.label :is_primary, "Use first image as main image?" %>
+      <%= product_image_fields.check_box :is_primary %>
+    </div>
+  <% end %>
+
+  <%= form.submit %>
+<% end %>

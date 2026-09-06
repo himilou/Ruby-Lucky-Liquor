@@ -1,0 +1,75 @@
+<!-- app/views/products/_form.html.erb -->
+<%= form_with(model: product, local: true) do |f| %>
+  <% if product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <ul>
+        <% product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!-- Product Fields -->
+  <div>
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div>
+    <%= f.label :description %>
+    <%= f.text_area :description %>
+  </div>
+
+  <!-- Sizes (Many-to-Many Checkboxes) -->
+  <div>
+    <h3>Available Sizes</h3>
+    <%= f.collection_check_boxes :size_ids, Size.all, :id, :sizes do |b| %>
+      <div>
+        <%= b.check_box %>
+        <%= b.label %>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Product Images (One-to-Many Nested Fields) -->
+  <div>
+    <h3>Product Images</h3>
+    <%= f.fields_for :product_images do |image_form| %>
+      <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+        
+        <!-- If the image already exists in the database, show a preview -->
+        <% if image_form.object.persisted? && image_form.object.file.attached? %>
+          <div>
+            <%= image_tag image_form.object.file.variant(resize_to_limit:) %>
+          </div>
+          <div>
+            <%= image_form.check_box :_destroy %>
+            <%= image_form.label :_destroy, "Delete this image" %>
+          </div>
+        <% end %>
+
+        <div>
+          <%= image_form.label :filename, "Custom Filename Label" %>
+          <%= image_form.text_field :filename %>
+        </div>
+
+        <div>
+          <%= image_form.label :is_primary, "Set as Primary Image?" %>
+          <%= image_form.check_box :is_primary %>
+        </div>
+
+        <div>
+          <%= image_form.label :file, "Upload Physical File" %>
+          <%= image_form.file_field :file %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.submit %>
+  </div>
+<% end %>
+

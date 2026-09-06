@@ -1,0 +1,47 @@
+<h1>Merch#show</h1>
+<p>Find me in app/views/products/show.html.erb</p>
+
+
+<h3> we got :<%=@hello%> </h3>
+
+
+ <% content_for :title, "Mechandise | Lucky Liquor" %>
+
+<section class="content-page">
+  <div class="section-block">
+	<div class="center-text">
+    <% if notice %>
+      <p class="notice"><%= notice %></p>
+    <% end %>
+    	<h1>Merchandise</h1>
+		<h3><%= @product.product_name %></h3>
+    	<p><%= @product.product_desc %></p>
+	</div>
+      <div class="info-grid">
+		<% @product.product_images.each do |image| %>
+        	<article class="info-card">
+			<% image_file = image&.file&.attached? ? image.file : "lucky_logo.jpg" %>
+			<%= image_tag image_file, alt: image.alt_text, class: "event-image" %>  
+        	</article>
+      	<% end %>
+    </div>
+  </div>
+  <p class="center-text">Quality t-shirts from Lucky to You!</p>
+  
+  <div class="info-grid">
+      <article class="info-card">
+        <h3>Live Music</h3>
+        <p>Catch local bands, rotating acts, and community favorites every week in a room built for sound and good company.</p>
+      </article>
+      <article class="info-card">
+        <h3>Pull Tabs</h3>
+        <p>Classic bar charm with the quick-hit fun that keeps the whole room buzzing.</p>
+      </article>
+      <article class="info-card">
+        <h3>Atmosphere</h3>
+        <p>Friendly staff, friendly regulars, and a laid-back Seattle dive vibe that feels like home.</p>
+      </article>
+    </div>
+</section>
+
+
