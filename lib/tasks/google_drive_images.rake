@@ -5,10 +5,10 @@ require "open-uri"
 
 namespace :images do
   file_count = 2
-  desc "Download two images at a time from the public Google Drive folder into app/assets/images/event_img"
+  desc "Download two images at a time from the public Google Drive folder into public/event_img"
   task sync_from_google_drive: :environment do
     folder_id = "1fS_IYqKFABFkozIT6JPtqikZMgqwHL9B"
-    target_dir = Rails.root.join("app/assets/images/event_img")
+    target_dir = Rails.root.join("public/event_img")
     FileUtils.mkdir_p(target_dir)
 
     file_entries = fetch_google_drive_entries(folder_id)
@@ -16,6 +16,8 @@ namespace :images do
     file_entries = file_entries.reject { |entry| downloaded_names.include?(sanitize_drive_image_name(entry[:name])) }
     # Stop the autopromotix file from downloading
     file_entries = file_entries.reject { |entry| entry[:name].downcase.include?("autopromo".downcase) }
+    # Don't download events more than 2 days old
+    file_entries = file_entries.reject { |entry| previous_events(entry[:name]) }
 
     if file_entries.empty?
       puts "No new image files to download. Already synced from events.json."
@@ -23,6 +25,7 @@ namespace :images do
       return
     end
 
+    # not currently implimented index file is empty or missing, so we will start from the beginning of the list
     index_file = Rails.root.join("tmp/google_drive_image_index.txt")
     current_index = if index_file.exist?
       index_file.read.to_i
@@ -75,6 +78,28 @@ namespace :images do
     end
 
     entries.uniq { |entry| entry[:id] }
+  end
+
+  def previous_events(title)
+    today = Date.today
+    # Subtract 2 days to include recently hosted events
+    today = today - 2
+
+    filename = File.basename(title.to_s.strip)
+    extension = File.extname(filename).delete(".")
+    basename_without_ext = File.basename(filename, ".*")
+
+    # Regex splits the leading date pattern from the trailing names
+    if basename_without_ext =~ /^([\d\.]+)(?:\s+(.*))?$/
+      date = $1
+      # name = $2.to_s
+    else
+      date = ""
+      # name = basename_without_ext
+    end
+    showdate = Date.strptime(date, "%m.%d.%y")
+
+    showdate < today
   end
 
   def sanitize_drive_image_name(title)

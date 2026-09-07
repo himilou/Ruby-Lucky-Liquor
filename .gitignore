@@ -35,5 +35,5 @@
 
 
 #ignore events flyers images 
-/app/assets/images/event_img/*
-!/app/assets/images/event_img/.gitkeep
+/public/event_img/*
+!/public/event_img/.gitkeep

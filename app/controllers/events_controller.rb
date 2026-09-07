@@ -1,14 +1,14 @@
 require "json"
 
 class EventsController < ApplicationController
+  # Constant to hold the path to the events.json file
+  DIR_PATH = Rails.root.join("public/event_img")
+  EVENTS_JSON_PATH = DIR_PATH.join("events.json")
   def events
     logger = Rails.logger
     @event_list = []
-
     begin
-      dir_path = Rails.root.join("app/assets/images/event_img")
-      json_path = dir_path.join("events.json")
-      data = JSON.parse(File.read(json_path))
+      data = JSON.parse(File.read(EVENTS_JSON_PATH.to_s))
 
       data.each do |event|
         @event_list << EventDetail.new(
@@ -19,27 +19,26 @@ class EventsController < ApplicationController
       end
     rescue Errno::ENOENT
       puts "File not found."
-      logger.warn "Warning: Could not read events.json"
+      Rails.logger.error "Error: Events Controller ould not read #{EVENTS_JSON_PATH} - file not found."
     rescue JSON::ParserError
       puts "Invalid JSON format."
-      logger.warn "Warning events.json file invalid."
+      Rails.logger.error "Error: events.json file invalid."
     end
   end
 
   def image
     filename = params[:filename].to_s
     @image_name = File.basename(filename)
-    @image_path = "event_img/#{@image_name}"
-    @image_file = Rails.root.join("app/assets/images", @image_path)
-
-    unless @image_name.present? && File.file?(@image_file)
+    image_file = DIR_PATH.join(filename)
+    
+    unless @image_name.present? && File.file?(image_file)
       raise ActionController::RoutingError, "Not Found"
+      Rails.logger.error "Error: Image file not found at #{image_file}"
     end
-
-    json_path = Rails.root.join("app/assets/images/event_img/events.json")
-    event_data = JSON.parse(File.read(json_path)).find { |event| event["filename"] == @image_name }
-
+    
+    event_data = JSON.parse(File.read(EVENTS_JSON_PATH.to_s)).find { |event| event["filename"] == @image_name }
     @event_date = event_data&.dig("date")
     @event_bandname = event_data&.dig("bandnames")
   end
 end
+

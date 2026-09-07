@@ -4,7 +4,7 @@
 
 
 # lib/tasks/workflow.rake
-namespace :get_images do
+namespace :images do
   desc "Download new images from google drive and jsonify"
   task run_all: :environment do
     # Define tasks in sequence
