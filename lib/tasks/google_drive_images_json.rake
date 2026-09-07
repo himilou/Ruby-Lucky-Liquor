@@ -52,7 +52,7 @@ namespace :images do
     end
     current_files = []
     parsed_files.each do |file|
-      keepday = Date.today
+      keepday = Date.today - 2
       showdate = Date.strptime(file[:date], "%m.%d.%y") rescue nil
       if showdate && showdate < keepday
         remove_file = dir_path.join(file[:filename])
