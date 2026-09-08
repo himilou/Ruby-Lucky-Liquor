@@ -1,0 +1,28 @@
+# version: '3.8' depreciated
+
+services:
+  luckyweb:
+    image: himilou/luckyweb:dev1
+    # The application code is packaged in the image so this compose file can
+    # run on a machine that does not have the source checkout.
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -b '0.0.0.0'"
+    ports:
+      - "3000:3000"
+    volumes:
+      # Named volume: Persists the SQLite database.
+      - lucky_rails_storage:/rails_app/storage
+      # Named volume: Persists compiled assets.
+      - lucky_rails_public_assets:/rails_app/public
+      # Anonymous volumes: Keep noisy logs and temporary files in Docker.
+      - /rails_app/tmp
+      - /rails_app/log
+    stdin_open: true
+    tty: true
+
+
+volumes:
+  lucky_rails_storage:       # Persists your SQLite database (Rails 8 defaults SQLite here)
+    external: true
+  # rails_log:           # Persists development/production logs
+  lucky_rails_public_assets:
+    external: true

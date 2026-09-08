@@ -39,11 +39,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_08_034105) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "initial_schemas", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "product_images", force: :cascade do |t|
     t.boolean "is_primary"
     t.string "alt_text"

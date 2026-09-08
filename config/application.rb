@@ -35,6 +35,8 @@ module Lucky
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    # DO NOT precompile assets in public/event_img
+    config.assets.paths.reject! { |path| path.to_s.include?("public/event_img") }
 
     # Don't generate system test files.
     config.generators.system_tests = nil
