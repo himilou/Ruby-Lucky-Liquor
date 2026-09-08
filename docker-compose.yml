@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: bundle exec rails server -b 0.0.0.0 
+    ports:
+      - "3000:3000"
+    volumes:
+      # Mount codebase for live reload (development only)
+      - .:/rails
+      # Mount named volumes for persistence (overrides the codebase mount for these folders)
+      - rails_storage:/rails/storage
+      - rails_log:/rails/log
+      - rails_public_assets:/rails/public/assets
+    environment:
+      - RAILS_ENV=development
+
+volumes:
+  rails_storage:       # Persists your SQLite database (Rails 8 defaults SQLite here)
+  rails_log:           # Persists development/production logs
+  rails_public_assets: # Persists your compiled assets and packs

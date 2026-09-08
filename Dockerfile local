@@ -1,0 +1,47 @@
+# syntax=docker/dockerfile:1
+# check=error=true
+
+# This is a modifie dockerfile for a development test environment. It is not intended for production use.
+# docker build -t lucky .
+# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name lucky lucky
+
+# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+
+# Make sure RUBY_VERSION matches the Ruby version in .ruby-version 
+# ARG RUBY_VERSION=3.4.4  <-- Not used anymore
+# FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
+FROM ruby:3.4.4-slim AS base
+
+# Rails app lives here
+WORKDIR /rails_app
+
+# Install base packages
+
+# Install system dependencies
+# Node.js and Yarn are optional but recommended if you manage assets through Rails
+RUN apt-get update -qq && apt-get install -y \
+  build-essential \
+  libpq-dev \
+  nodejs \
+  postgresql-client \
+  && rm -rf /var/lib/apt/lists/*
+
+# Set up the working directory inside the container
+WORKDIR /rails_app
+
+# Set environment variables to configure Bundler pathing
+ENV BUNDLE_PATH=/usr/local/bundle \
+    BUNDLE_BIN=/usr/local/bundle/bin
+
+# Copy Gemfile and lockfile first to take advantage of Docker caching
+COPY Gemfile Gemfile.lock ./
+
+# Install gems
+RUN bundle install
+
+# Copy application code
+COPY . .
+
+EXPOSE 3000
+# Make sure to bind to 0.0.0.0 or no traffic will get through to the container from outside.
+CMD ["rails", "server", "-b", "0.0.0.0"]
