@@ -24,7 +24,7 @@ end
 
 
 def create_sizes
-  shirt_sizes = [ [ "Small", "S" ], [ "Medium", "M" ], [ "Large", "L" ] ]
+  shirt_sizes = [ [ "Small", "S" ], [ "Medium", "M" ], [ "Large", "L" ], [ "Xlarge", "XL" ] ]
 
   shirt_sizes.each do |size_name, size_code|
     Size.find_or_create_by!(size: size_name) do |size|
@@ -37,16 +37,17 @@ end
 
 
 def create_image
-  plain_t_path = Rails.root.join("app/assets/images/products/plain_t.jpeg")
+  plain_t_path = Rails.root.join("app/assets/images/plain_t.jpeg")
   product = Product.find_by(product_name: "Lucky plain T")
 
   return unless product
   return unless plain_t_path.exist?
 
+
   ProductImage.find_or_create_by!(product_id: product.id) do |image|
-    image.image_filename = "plain_t.jpeg"
     image.is_primary = true
     image.alt_text = "plain black tee"
+    image.file.attach(io: File.open(plain_t_path), filename: "plain_t.jpeg", content_type: "image/jpeg")
   end
 
   puts "Created or ensured product image"
@@ -89,4 +90,18 @@ def clear_tables
   puts "All products tables cleared"
 end
 
-create_basic_items
+
+def clear_active_storage(clear_files: false)
+  if clear_files
+    ActiveStorage::Blob.find_each(&:purge)
+    puts "Active storage tables and files cleared"
+  else
+    # clears tables only files still exist in storage folder
+    ActiveStorage::Attachment.destroy_all
+    ActiveStorage::Blob.destroy_all
+    puts "All active storage tables cleared"
+  end
+end
+
+# create_basic_items
+create_image
