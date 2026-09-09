@@ -7,7 +7,7 @@
       <% @event_list.each do |evt| %>
         <article class="info-card">
           <p class="event-date"><%= evt.date %></p>
-          <%= link_to events_image_path(filename: evt.filename), target: "_blank", rel: "noopener", class: "event-image-link" do %>
+          <%= link_to events_image_path(filename: evt.filename), class: "event-image-link" do %>
             <%= image_tag "/event_img/#{evt.filename}", alt: evt.bandname, class: "event-image" %>
           <% end %>
           <h5><%= evt.bandname %></h5>

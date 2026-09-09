@@ -4,20 +4,15 @@
   <div class="section-block">
     <h1>Gallery</h1>
     <p>Moments from the bar, the crowd, and the live music that keep Lucky Liquor feeling like the old-school neighborhood spot it is.</p>
-
+        
     <div class="gallery-grid">
-      <figure class="gallery-card">
-        <%= image_tag "old_front_photo.jpg", alt: "Lucky Liquor storefront" %>
-        <figcaption>Lucky Liquor storefront</figcaption>
-      </figure>
-      <figure class="gallery-card">
-        <%= image_tag "lucky_logo.jpg", alt: "Lucky Liquor logo" %>
-        <figcaption>Branding</figcaption>
-      </figure>
-      <figure class="gallery-card">
-        <%= image_tag "old_front_photo.jpg", alt: "Bar interior" %>
-        <figcaption>Inside the room</figcaption>
-      </figure>
+      <% @image_list.each do |name|%>
+        <figure class="gallery-card">
+        <%= link_to gallery_image_path(filename: name), class: "event-image-link" do%>
+        <%= image_tag name, alt: name, class: "event-image"%>
+        <% end %>
+        </figure>
+      <% end %>
     </div>
   </div>
 </section>
