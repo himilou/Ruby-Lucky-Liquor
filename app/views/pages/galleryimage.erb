@@ -1,0 +1,9 @@
+<% content_for :title, "Gallery Image | Lucky Liquor" %>
+
+<section class="content-page full-size-event-wrap">
+  <%= link_to "← Back to gallery", gallery_path, class: "event-back-link" %>
+
+  <div class="image-page-frame">
+    <%= image_tag @image_name, alt: @image_name , class: "full-size-event-image"%>
+  </div>
+</section>

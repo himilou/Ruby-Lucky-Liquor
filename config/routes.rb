@@ -12,11 +12,12 @@ Rails.application.routes.draw do
 
   get "events", to: "events#events"
   get "events/image", to: "events#image", as: :events_image
+
   get "menu", to: "pages#menu"
   get "press", to: "pages#press"
   get "about", to: "pages#about"
   get "contact", to: "pages#contact"
-  get "gallery", to: "pages#gallery"
-
+  get "gallery", to: "pages#gallery", as: :gallery
+  get "galleryimage", to: "pages#galleryimage", as: :gallery_image
   get "up" => "rails/health#show", as: :rails_health_check
 end
