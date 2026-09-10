@@ -7,7 +7,7 @@
 
     <ul class="hours" aria-label="Operating hours">
       <% @hours.each do |hour| %>
-        <li><%= hour %></li>
+        <li><%= hour.day%> - <%= hour.opentime%> - <%=hour.closetime%></li>
       <% end %>
     </ul>
 

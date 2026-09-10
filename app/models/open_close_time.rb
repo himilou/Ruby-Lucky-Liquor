@@ -1,0 +1,2 @@
+class OpenCloseTime < ApplicationRecord
+end
