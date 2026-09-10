@@ -1,7 +1,7 @@
 class HoursController < ApplicationController
   # Note this controller does not allow the creating of new users, only authenticates existing users
 
-  before_action :require_user, only: [ :main, :changepassword ]
+  before_action :require_user, only: [ :main, :changepassword, :update_hours ]
 
 
   def main
@@ -36,10 +36,13 @@ class HoursController < ApplicationController
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       flash[:notice] = "Logged in sucessfully!"
+      timenow = Time.now
+      Rails.logger.info("#{params[:username]} logged in at #{timenow}")
       puts "#{user.username} logged in"
       redirect_to hours_path
     else
       puts "login failed"
+      Rails.logger.warn("Login failed for user: #{params[:username]}")
       redirect_to newlogin_path(),  notice: "login failed"
     end
   end
@@ -58,8 +61,10 @@ class HoursController < ApplicationController
 
     if current_user.update(password: pw)
       session[:user_id] = nil
+      Rails.logger.info("#{current_user.username} changed password at #{timenow}")
       redirect_to newlogin_path(),  notice: "password changed"
     else
+      Rails.logger.info("#{current_user.username} Error changing password #{timenow}")
       redirect_to newlogin_path(),  notice: "Error occured. Password not updated"
     end
   end
