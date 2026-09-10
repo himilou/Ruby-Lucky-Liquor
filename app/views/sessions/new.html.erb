@@ -1,0 +1,46 @@
+
+
+
+
+<% if flash[:notice] %>
+  <div class="notice" "data-turbolinks": "false"><h2><%= flash[:notice] %> </h2></div>
+<% end %>
+<% if !logged_in?%>
+  <h3>login</h3>
+  <%= form_with url: login_path, local: true do |form| %>
+    <div>
+      <%= form.label :username %>
+      <%= form.text_field :username %>
+    </div>
+
+    <div>
+      <%= form.label :password %>
+      <%= form.password_field :password %>
+    </div>
+
+    <div>
+      <%= form.submit "Log In" %>
+    </div>
+    <% end %>
+<% else%>
+<h3>logoff - change password</h3>
+    <%= form_with url: changepassword_path, local: true do |form| %>
+      <div>
+        <%= form.label :password %>
+        <%= form.password_field :password %>
+      </div>
+      <div>
+        <%= form.label "confirm password" %>
+        <%= form.password_field :confirmpassword %>
+      </div>
+
+      <div>
+        <%= form.submit "change password" %>
+      </div>
+    <% end %>
+<br/>
+<br/>
+<%= button_to "Log Out", logout_path, method: :delete %>
+<% end %>
+
+
