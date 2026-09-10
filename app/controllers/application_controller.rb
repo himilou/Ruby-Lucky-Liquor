@@ -2,8 +2,6 @@ class ApplicationController < ActionController::Base
   # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
   allow_browser versions: :modern
 
-  before_action :require_user, only: [ :hours ]
-
   helper_method :current_user, :logged_in?
 
   def current_user
@@ -17,11 +15,7 @@ class ApplicationController < ActionController::Base
   def require_user
     unless logged_in?
       flash[:alert] = "You must be logged in to do that."
-      redirect_to login_path
+      redirect_to newlogin_path
     end
-  end
-
-  def hours
-    @welcome = "welcome to the shop hours page"
   end
 end

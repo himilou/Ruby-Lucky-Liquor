@@ -15,7 +15,7 @@ class CreateOpenCloseTimes < ActiveRecord::Migration[8.0]
     inital_hours = [
       { day: "Monday", opentime: "11A", closetime: "10P" },
       { day: "Tuesday", opentime: "11A", closetime: "10P" },
-      { day: "Wedensday", opentime: "11A", closetime: "10P" },
+      { day: "Wednesday", opentime: "11A", closetime: "10P" },
       { day: "Thursday", opentime: "11A", closetime: "10P" },
       { day: "Friday", opentime: "11A", closetime: "11P" },
       { day: "Saturday", opentime: "11A", closetime: "11P" },

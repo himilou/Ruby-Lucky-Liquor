@@ -115,20 +115,51 @@ img {
 .site-main h1 {
   text-align: center;
 }
+.hours-main {
+  text-align: center;
+  padding-top: 18px;
+  box-sizing: border-box; 
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.hours-input {
+  text-align: center;
+  padding-top: 18px;
+  box-sizing: border-box; 
+  border-radius: 4px;
+}
+
+.hours-input table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hours-main h2{
+  text-align: center;
+  padding-top: 18px;
+}
+
+.hours-input-narrow {
+  width: 60px;            /*small width for times*/
+  max-width: 100%;         /* Prevents the box from breaking on tiny mobile screens */
+  box-sizing: border-box;  
+}
 
 .hours {
   list-style: none;
-  margin: 20px auto 0;
   padding: 0;
-  max-width: 700px;
   display: grid;
   gap: 10px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
 }
 
 .hours li {
   font-size: 1.05rem;
   letter-spacing: 0.08em;
-  text-transform: uppercase;
   color: var(--text);
   font-weight: 700;
 }
@@ -369,6 +400,7 @@ img {
   margin-top: 18px;
   letter-spacing: 0.04em;
 }
+
 
 .center-text {
   text-align: center;

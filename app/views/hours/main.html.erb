@@ -1,0 +1,46 @@
+
+
+
+<div class="hours-main">
+    <h2>current hours</h2>
+    <ul class="hours" aria-label="current operating hours">
+    <% @hours.each do |hour| %>
+        <li><%= hour.day %> - <%= hour.opentime %> - <%= hour.closetime %></li>
+    <% end %>
+    </ul>
+</div>
+<div class="hours-input">
+    <%= form_with url: update_hours_path, method: :patch, scope: :hours, local: true do |form| %>
+    <table>
+        <thead>
+        <tr>
+            <th>Day</th>
+            <th>Opening time</th>
+            <th>Closing time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday].each do |day| %>
+            <% hour = @hours.find { |record| record.day == day } %>
+            <% hour ||= OpenCloseTime.new(day: day) %>
+            <tr>
+            <th scope="row"><%= day %></th>
+            <%= form.fields_for day, hour do |day_form| %>
+                <td>
+                <%= day_form.label :opentime, "open", class: "visually-hidden" %>
+                <%= day_form.text_field :opentime, required: true , class: "hours-input-narrow"%>
+                </td>
+                <td>
+                <%= day_form.label :closetime, "close", class: "visually-hidden" %>
+                <%= day_form.text_field :closetime, required: true, class: "hours-input-narrow" %>
+                </td>
+            <% end %>
+            </tr>
+        <% end %>
+        </tbody>
+    </table>
+    <%= form.submit "Save hours" %>
+    <% end %>
+</div>
+
+<%= button_to "Log Out", logout_path, method: :delete %>

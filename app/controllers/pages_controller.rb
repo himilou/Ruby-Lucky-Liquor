@@ -5,18 +5,6 @@ class PagesController < ApplicationController
     @hours = OpenCloseTime.all
   end
 
-  def menu
-  end
-
-  def press
-  end
-
-  def about
-  end
-
-  def contact
-  end
-
   def gallery
     @image_list = []
     dir_files = []
@@ -34,6 +22,18 @@ class PagesController < ApplicationController
 
   def galleryimage
     @image_name = params[:filename].to_s
+  end
+
+  def menu
+  end
+
+  def press
+  end
+
+  def about
+  end
+
+  def contact
   end
   private
 
