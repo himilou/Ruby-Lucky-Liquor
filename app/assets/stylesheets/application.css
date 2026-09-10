@@ -374,6 +374,11 @@ img {
   text-align: center;
 }
 
+.notice {
+  text-align: center;
+  color: red;
+}
+
 @media (max-width: 720px) {
   .page-shell {
     width: min(92vw, 100%);
