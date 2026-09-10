@@ -1,13 +1,37 @@
 class HoursController < ApplicationController
   # Note this controller does not allow the creating of new users, only authenticates existing users
 
-  helper_method :current_user, :logged_in?
+  before_action :require_user, only: [ :main, :changepassword ]
+
+
+  def main
+    @welcome = "hours main page"
+    @hours = OpenCloseTime.order(:id)
+  end
+
+  def update_hours
+    OpenCloseTime.transaction do
+      hours_params.each do |day, values|
+        record = OpenCloseTime.find_by(day: day)
+        record ||= OpenCloseTime.new(day: day)
+        record.update!(opentime: values[:opentime], closetime: values[:closetime], day: day)
+      end
+    end
+
+    redirect_to hours_path, notice: "Hours updated successfully."
+  rescue ActiveRecord::RecordInvalid => error
+    redirect_to hours_path, alert: "Hours could not be updated: #{error.message}"
+  end
 
   def new
+  end
+
+  # authentication methods follow
+  def newlogin
     # Renders the login form
   end
 
-  def create
+  def createlogin
     user = User.find_by(username: params[:username])
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
@@ -16,47 +40,47 @@ class HoursController < ApplicationController
       redirect_to hours_path
     else
       puts "login failed"
-      redirect_to hours_new_path(),  notice: "login failed"
+      redirect_to newlogin_path(),  notice: "login failed"
     end
   end
 
   def changepassword
     if ! logged_in?
-      redirect_to hours_new_path(),  notice: "You must be logged in"
+      redirect_to newlogin_path(),  notice: "You must be logged in"
     end
     pw = params[:password]
     pwconfirm =  params[:confirmpassword]
 
     if pw != pwconfirm
-      redirect_to hours_new_path(),  notice: "passwords must match."
+      redirect_to newlogin_path(),  notice: "passwords must match."
     end
     current_user ||= User.find(session[:user_id])
 
     if current_user.update(password: pw)
       session[:user_id] = nil
-      redirect_to hours_new_path(),  notice: "password changed"
+      redirect_to newlogin_path(),  notice: "password changed"
     else
-      redirect_to hours_new_path(),  notice: "Error occured. Password not updated"
+      redirect_to newlogin_path(),  notice: "Error occured. Password not updated"
     end
   end
-
 
   def destroy
     session[:user_id] = nil
     flash[:notice] = "Logged out!"
-    redirect_to hours_new_path(),  notice: "sucessfully logged out"
+    redirect_to newlogin_path(),  notice: "sucessfully logged out"
   end
 
+  private
 
-
-
-  def current_user
-    # Find the user if a session exists, and memoize it
-    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
-  end
-
-  def logged_in?
-    # Returns true if current_user is present, false otherwise
-    current_user.present?
+  def hours_params
+    params.require(:hours).permit(
+      "Monday" => [ :opentime, :closetime ],
+      "Tuesday" => [ :opentime, :closetime ],
+      "Wednesday" => [ :opentime, :closetime ],
+      "Thursday" => [ :opentime, :closetime ],
+      "Friday" => [ :opentime, :closetime ],
+      "Saturday" => [ :opentime, :closetime ],
+      "Sunday" => [ :opentime, :closetime ]
+    )
   end
 end

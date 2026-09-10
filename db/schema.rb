@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_09_10_023156) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_10_040000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -96,17 +96,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_10_023156) do
     t.string "password_digest"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "open_close_times", force: :cascade do |t|
-    t.string :day, null: false, index: { unique: true }
-    t.string :opentime, null: false
-    t.string :closetime, null: false
-    t.boolean :closeallday
-    t.string :message
-    t.date :expires
-
-    t.timestamps
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

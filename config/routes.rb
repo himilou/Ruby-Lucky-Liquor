@@ -2,7 +2,6 @@ Rails.application.routes.draw do
   root "pages#home"
 
   get "menu", to: "pages#menu"
-  get "hours", to: "pages#hours", as: :hours
   get "press", to: "pages#press"
   get "about", to: "pages#about"
   get "contact", to: "pages#contact"
@@ -11,13 +10,16 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
 
-  get "hours/new"
+  get "hours", to: "hours#main"
+  patch "hours", to: "hours#update_hours", as: :update_hours
+  get "hours/main"
+  # get "hours/new"
   get "hours/create"
   # get "sessions/destroy"
 
   # Following allows controller redirects
-  get  "login",  to: "hours#new"
-  post "login",  to: "hours#create"
+  get  "newlogin",  to: "hours#newlogin"
+  post "newlogin",  to: "hours#createlogin"
   post "changepassword", to: "hours#changepassword"
   delete "logout", to: "hours#destroy"
 
