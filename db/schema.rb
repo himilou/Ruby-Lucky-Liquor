@@ -98,6 +98,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_09_10_023156) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "open_close_times", force: :cascade do |t|
+    t.string :day, null: false, index: { unique: true }
+    t.string :opentime, null: false
+    t.string :closetime, null: false
+    t.boolean :closeallday
+    t.string :message
+    t.date :expires
+
+    t.timestamps
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "product_images", "products"

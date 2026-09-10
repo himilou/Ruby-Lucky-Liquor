@@ -11,15 +11,15 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
 
-  get "sessions/new"
-  get "sessions/create"
+  get "hours/new"
+  get "hours/create"
   # get "sessions/destroy"
 
   # Following allows controller redirects
-  get  "login",  to: "sessions#new"
-  post "login",  to: "sessions#create"
-  post "changepassword", to: "sessions#changepassword"
-  delete "logout", to: "sessions#destroy"
+  get  "login",  to: "hours#new"
+  post "login",  to: "hours#create"
+  post "changepassword", to: "hours#changepassword"
+  delete "logout", to: "hours#destroy"
 
   # products routes
   get "products", to: "products#index"

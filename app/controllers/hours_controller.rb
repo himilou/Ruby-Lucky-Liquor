@@ -1,4 +1,4 @@
-class SessionsController < ApplicationController
+class HoursController < ApplicationController
   # Note this controller does not allow the creating of new users, only authenticates existing users
 
   helper_method :current_user, :logged_in?
@@ -16,27 +16,27 @@ class SessionsController < ApplicationController
       redirect_to hours_path
     else
       puts "login failed"
-      redirect_to sessions_new_path(),  notice: "login failed"
+      redirect_to hours_new_path(),  notice: "login failed"
     end
   end
 
   def changepassword
     if ! logged_in?
-      redirect_to sessions_new_path(),  notice: "You must be logged in"
+      redirect_to hours_new_path(),  notice: "You must be logged in"
     end
     pw = params[:password]
     pwconfirm =  params[:confirmpassword]
 
     if pw != pwconfirm
-      redirect_to sessions_new_path(),  notice: "passwords must match."
+      redirect_to hours_new_path(),  notice: "passwords must match."
     end
     current_user ||= User.find(session[:user_id])
 
     if current_user.update(password: pw)
       session[:user_id] = nil
-      redirect_to sessions_new_path(),  notice: "password changed"
+      redirect_to hours_new_path(),  notice: "password changed"
     else
-      redirect_to sessions_new_path(),  notice: "Error occured. Password not updated"
+      redirect_to hours_new_path(),  notice: "Error occured. Password not updated"
     end
   end
 
@@ -44,7 +44,7 @@ class SessionsController < ApplicationController
   def destroy
     session[:user_id] = nil
     flash[:notice] = "Logged out!"
-    redirect_to sessions_new_path(),  notice: "sucessfully logged out"
+    redirect_to hours_new_path(),  notice: "sucessfully logged out"
   end
 
 
