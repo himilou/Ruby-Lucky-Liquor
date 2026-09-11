@@ -26,6 +26,7 @@ end
 def create_sizes
   shirt_sizes = [ [ "Small", "S" ], [ "Medium", "M" ], [ "Large", "L" ], [ "Xlarge", "XL" ] ]
 
+
   shirt_sizes.each do |size_name, size_code|
     Size.find_or_create_by!(size: size_name) do |size|
       size.size_code = size_code
@@ -73,7 +74,34 @@ def create_product_sizes
   puts "Created or ensured product stock entries for each size on both products"
 end
 
+def create_initial_hours
+  inital_hours = [
+    { day: "Monday", opentime: "11A", closetime: "10P" },
+    { day: "Tuesday", opentime: "11A", closetime: "10P" },
+    { day: "Wednesday", opentime: "11A", closetime: "10P" },
+    { day: "Thursday", opentime: "11A", closetime: "10P" },
+    { day: "Friday", opentime: "11A", closetime: "11P" },
+    { day: "Saturday", opentime: "11A", closetime: "11P" },
+    { day: "Sunday", opentime: "11A", closetime: "9P" }
+  ]
 
+  inital_hours.each do |hours|
+    OpenCloseTime.find_or_create_by!(day: hours[:day]) do |entry|
+      entry.opentime = hours[:opentime]
+      entry.closetime = hours[:closetime]
+    end
+  end
+end
+
+# db:seed will not call individual methods. Must be called from here
+create_products
+create_sizes
+create_product_sizes
+create_image
+create_initial_hours
+
+=begin
+# Only for calling from ruby interpreter
 def create_basic_items
   create_products
   create_sizes
@@ -87,6 +115,7 @@ def clear_tables
   Size.destroy_all
   ProductImage.destroy_all
   ProductSize.destroy_all
+  clear_active_storage
   puts "All products tables cleared"
 end
 
@@ -104,4 +133,5 @@ def clear_active_storage(clear_files: false)
 end
 
 # create_basic_items
-create_image
+
+=end
