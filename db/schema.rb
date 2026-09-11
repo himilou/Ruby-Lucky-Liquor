@@ -10,26 +10,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_11_054518) do
+ActiveRecord::Schema[8.0].define(version: 2026_09_11_054518) do
   create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
-    t.string "name", null: false
-    t.bigint "record_id", null: false
-    t.string "record_type", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
   create_table "active_storage_blobs", force: :cascade do |t|
-    t.bigint "byte_size", null: false
-    t.string "checksum"
-    t.string "content_type"
-    t.datetime "created_at", null: false
-    t.string "filename", null: false
     t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
     t.text "metadata"
     t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum"
+    t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
@@ -45,57 +45,57 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_11_054518) do
   end
 
   create_table "open_close_times", force: :cascade do |t|
-    t.boolean "closeallday"
-    t.string "closetime", null: false
-    t.datetime "created_at", null: false
     t.string "day", null: false
-    t.date "expires"
-    t.string "message"
     t.string "opentime", null: false
+    t.string "closetime", null: false
+    t.boolean "closeallday"
+    t.string "message"
+    t.date "expires"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["day"], name: "index_open_close_times_on_day", unique: true
   end
 
   create_table "product_images", force: :cascade do |t|
+    t.boolean "is_primary"
     t.string "alt_text"
     t.datetime "created_at", null: false
-    t.boolean "is_primary"
-    t.integer "product_id", null: false
     t.datetime "updated_at", null: false
+    t.integer "product_id", null: false
     t.index ["product_id"], name: "index_product_images_on_product_id"
   end
 
   create_table "product_sizes", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.float "price"
     t.integer "product_id", null: false
     t.integer "size_id", null: false
-    t.string "sku"
     t.integer "stock_level"
+    t.string "sku"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "price"
     t.index ["product_id"], name: "index_product_sizes_on_product_id"
     t.index ["size_id"], name: "index_product_sizes_on_size_id"
   end
 
   create_table "products", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.text "product_desc"
     t.string "product_name"
+    t.text "product_desc"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "sizes", force: :cascade do |t|
-    t.datetime "created_at", null: false
     t.string "size"
     t.string "size_code"
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "password_digest"
-    t.datetime "updated_at", null: false
     t.string "username"
+    t.string "password_digest"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
