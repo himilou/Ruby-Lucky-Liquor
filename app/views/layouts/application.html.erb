@@ -24,8 +24,7 @@
         <nav class="main-nav" aria-label="Main navigation">
           <%= link_to "Home", root_path, class: nav_link_class("home") %>
           <%= link_to "Events", events_path, class: nav_link_class("events") %>
-          <!-- comment out for current production -->
-          <%#= link_to "Merchandise", products_path, class: nav_link_class("products") %>
+          <%= link_to "Merchandise", products_path, class: nav_link_class("products") %>
           <%= link_to "Menu", menu_path, class: nav_link_class("menu") %>
           <%= link_to "Press", press_path, class: nav_link_class("press") %>
           <%= link_to "About", about_path, class: nav_link_class("about") %>
