@@ -4,9 +4,14 @@ require "json"
 require "open-uri"
 
 namespace :images do
-  file_count = 2
+  file_count = 4
   desc "Download two images at a time from the public Google Drive folder into public/event_img"
   task sync_from_google_drive: :environment do
+    d = DateTime.now
+    d.strftime("%d/%m/%Y %H:%M")
+    dstr = "Image_downloader starting at: #{d}"
+    puts dstr
+    Rails.logger.info dstr
     folder_id = "1fS_IYqKFABFkozIT6JPtqikZMgqwHL9B"
     target_dir = Rails.root.join("public/event_img")
     FileUtils.mkdir_p(target_dir)
