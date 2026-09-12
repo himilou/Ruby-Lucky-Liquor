@@ -1,22 +1,74 @@
-version: '3.8'
+#depreciated version: '3.8'
 
 services:
-  web:
+  luckyweb-permissions:
+    image: alpine:latest
+    user: "0:0"
+    # command sets permissions on /public/event_img so that the rake tasks have access
+    command: >-
+      sh -c "chown -R 1000:1000 /volume/event_img &&
+      chmod -R u+rwX,g+rwX /volume/event_img"
+    volumes:
+      - lucky_rails_public_assets:/volume
+
+  luckyweb:
+    depends_on:
+      luckyweb-permissions:
+        condition: service_completed_successfully
+    image: himilou/luckyweb:Prod1
     build: .
-    command: bundle exec rails server -b 0.0.0.0 
+
+    command: bundle exec rails server -b 0.0.0.0
     ports:
-      - "3000:3000"
+      - "80:80"
     volumes:
       # Mount codebase for live reload (development only)
-      - .:/rails
-      # Mount named volumes for persistence (overrides the codebase mount for these folders)
-      - rails_storage:/rails/storage
-      - rails_log:/rails/log
-      - rails_public_assets:/rails/public/assets
+      #- .:/rails
+      
+      #NOTE THESE VOLUMES SHOULD ALREADY EXIST
+      # Named volume: Persists the SQLite database.
+      - lucky_rails_storage:/rails/storage
+      # Named volume: Persists compiled assets.
+      - type: volume
+        source: lucky_rails_public_assets
+        target: /rails/public/event_img
+        volume:
+          subpath: event_img
+
+      - lucky_rails_log:/rails/log
+      # Anonymous volumes: Keep noisy logs and temporary files in Docker.
+      #- /rails_app/tmp
+      #- /rails_app/log
     environment:
-      - RAILS_ENV=development
+      - RAILS_ENV=production
+      - PORT=80
+
+  # Second container build for rake tasks to gather event flyers    
+  luckytasks:
+    image: himilou/luckytasks:Prod1
+    # build: .
+    # By default, this container will do nothing until you call it,
+    # or you can give it a specific task to run on startup:
+    build: .
+    command: bundle exec rails images:run_all
+    volumes:
+      - type: volume
+        source: lucky_rails_public_assets
+        target: /rails/public/event_img
+        volume:
+          subpath: event_img
+      - lucky_rails_log:/rails/log
+
+    environment:
+      - RAILS_ENV=production
 
 volumes:
-  rails_storage:       # Persists your SQLite database (Rails 8 defaults SQLite here)
-  rails_log:           # Persists development/production logs
-  rails_public_assets: # Persists your compiled assets and packs
+  lucky_rails_log:           # Persists development/production logs
+    external: true
+  # if creating volumes directory name will be appended to volume name. THIS DOES NOT HAPPEN WITH EXISTING
+  lucky_rails_storage:       # Persists your SQLite database (Rails 8 defaults SQLite here)
+    external: true 
+  lucky_rails_public_assets: #Persists files stored in /public/event_image
+    external: true
+
+  

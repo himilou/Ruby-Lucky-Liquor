@@ -43,3 +43,5 @@ lucky_gem_cache_backup.tar.gz
 lucky_rails_public_assets_backup.tar.gz
 lucky_rails_storage_backup.tar.gz
 luckyweb_image.tar
+
+/config/credentials/staging.key
