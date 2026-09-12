@@ -7,9 +7,12 @@ services:
     # command sets permissions on /public/event_img so that the rake tasks have access
     command: >-
       sh -c "chown -R 1000:1000 /volume/event_img &&
-      chmod -R u+rwX,g+rwX /volume/event_img"
+      chmod -R u+rwX,g+rwX /volume/event_img && 
+      chown -R 1000:1000 /dbvol && 
+      chmod -R u+rwX,g+rwX /dbvol"
     volumes:
       - lucky_rails_public_assets:/volume
+      - lucky_rails_storage:/dbvol
 
   luckyweb:
     depends_on:
@@ -42,6 +45,7 @@ services:
     environment:
       - RAILS_ENV=production
       - PORT=80
+      - RAILS_LOG_TO_STDOUT=false
 
   # Second container build for rake tasks to gather event flyers    
   luckytasks:
@@ -61,6 +65,7 @@ services:
 
     environment:
       - RAILS_ENV=production
+      - RAILS_LOG_TO_STDOUT=false
 
 volumes:
   lucky_rails_log:           # Persists development/production logs
