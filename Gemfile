@@ -38,7 +38,7 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 # restrict json to < 3.0 for rails bug https://github.com/rails/rails/issues/58685
-gem "json", "< 3.0"
+gem "json", "< 4.0"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
