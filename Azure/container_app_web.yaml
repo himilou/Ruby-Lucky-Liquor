@@ -1,0 +1,51 @@
+type: Microsoft.App/containerapps
+properties:
+  managedEnvironmentId: /subscriptions/24738afd-7c58-43fb-a685-c5e3a0dfbee7/resourceGroups/luckyliquor/providers/Microsoft.App/managedEnvironments/luckyliquor-env
+  configuration:
+    ingress:
+      external: true
+      targetPort: 3000
+      transport: auto
+      allowInsecure: true
+    secrets:
+      - name: rails-master-key
+        value: bootstrap-placeholder
+  template:
+    containers:
+      - name: luckyweb
+        image: himilou/luckyweb:Prod1
+        # Override the Docker entrypoint so the existing database is not initialized.
+        command: ["bash", "bin/azure-entrypoint"]
+        args: ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+        env:
+          - name: RAILS_ENV
+            value: production
+          - name: PORT
+            value: "3000"
+          - name: RAILS_LOG_TO_STDOUT
+            value: "true"
+          - name: RAILS_MASTER_KEY
+            secretRef: rails-master-key
+        resources:
+          cpu: 0.25
+          memory: 0.5Gi
+        volumeMounts:
+          - volumeName: web-storage-volume
+            mountPath: /rails/storage
+          - volumeName: web-assets-volume
+            mountPath: /rails/public/event_img
+          - volumeName: web-log-volume
+            mountPath: /rails/log
+    volumes:
+      - name: web-storage-volume
+        storageName: luckyliquor-storage-mount
+        storageType: AzureFile
+      - name: web-assets-volume
+        storageName: luckyliquor-file-mount
+        storageType: AzureFile
+      - name: web-log-volume
+        storageName: luckyliquor-log-mount
+        storageType: AzureFile
+    scale:
+      minReplicas: 1
+      maxReplicas: 1
