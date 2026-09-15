@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# SQLite cannot safely use an Azure Files SMB mount as its live database.
+# Copy the uploaded database to local ephemeral storage for this process.
+SOURCE_DATABASE="${SOURCE_DATABASE:-/rails/storage/development.sqlite3}"
+LOCAL_DATABASE="${DATABASE_PATH:-/tmp/lucky-storage/development.sqlite3}"
+
+if [[ ! -f "$SOURCE_DATABASE" ]]; then
+  echo "Azure database source not found: $SOURCE_DATABASE" >&2
+  exit 1
+fi
+
+mkdir -p "$(dirname "$LOCAL_DATABASE")"
+rm -f "${LOCAL_DATABASE}-wal" "${LOCAL_DATABASE}-shm"
+cp "$SOURCE_DATABASE" "$LOCAL_DATABASE"
+chmod u+rw "$LOCAL_DATABASE"
+export DATABASE_PATH="$LOCAL_DATABASE"
+
+echo "Using local SQLite copy: $DATABASE_PATH"
+exec "$@"
