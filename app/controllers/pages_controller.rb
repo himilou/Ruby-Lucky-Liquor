@@ -1,8 +1,11 @@
 class PagesController < ApplicationController
   before_action :set_page_title
 
+
   def home
-    @hours = OpenCloseTime.all
+    # this is for db based hours @hours = OpenCloseTime.all
+    jsonhours = JsonOpenClose.new
+    @hours = jsonhours.get
   end
 
   def gallery

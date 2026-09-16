@@ -4,41 +4,39 @@
 <div class="hours-main">
     <h2>current hours</h2>
     <ul class="hours" aria-label="current operating hours">
-    <% @hours.each do |hour| %>
-        <li><%= hour.day %> - <%= hour.opentime %> - <%= hour.closetime %></li>
+    <% @current.each do |day_of_week| %>
+        <li><%= day_of_week['day'] %> - <%= day_of_week['opentime'] %> - <%= day_of_week['closetime'] %></li>
     <% end %>
     </ul>
 </div>
 <div class="hours-input">
     <%= form_with url: update_hours_path, method: :patch, scope: :hours, local: true do |form| %>
-    <table>
-        <thead>
-        <tr>
-            <th>Day</th>
-            <th>Opening time</th>
-            <th>Closing time</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% %w[Monday Tuesday Wednesday Thursday Friday Saturday Sunday].each do |day| %>
-            <% hour = @hours.find { |record| record.day == day } %>
-            <% hour ||= OpenCloseTime.new(day: day) %>
+        <table>
+            <thead>
             <tr>
-            <th scope="row"><%= day %></th>
-            <%= form.fields_for day, hour do |day_form| %>
-                <td>
-                <%= day_form.label :opentime, "open", class: "visually-hidden" %>
-                <%= day_form.text_field :opentime, required: true , class: "hours-input-narrow"%>
-                </td>
-                <td>
-                <%= day_form.label :closetime, "close", class: "visually-hidden" %>
-                <%= day_form.text_field :closetime, required: true, class: "hours-input-narrow" %>
-                </td>
-            <% end %>
+                <th>Day</th>
+                <th>Open Time</th>
+                <th>Close Time</th>
             </tr>
-        <% end %>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <% @form_fields.each do |row| %>
+                <tr>
+                <td>
+                    <strong><%= row['day'] %></strong>
+                    <%# Hidden field keeps the day linked to the times on submission %>
+                    <%= hidden_field_tag "hours[][day]", row['day'] %>
+                </td>
+                <td>
+                    <%= text_field_tag "hours[][opentime]", row['opentime'], class: "form-control" %>
+                </td>
+                <td>
+                    <%= text_field_tag "hours[][closetime]", row['closetime'], class: "form-control" %>
+                </td>
+                </tr>
+            <% end %>
+            </tbody>
+        </table>
     <%= form.submit "Save hours" %>
     <% end %>
 </div>
