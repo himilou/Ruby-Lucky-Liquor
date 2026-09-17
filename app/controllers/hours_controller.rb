@@ -17,6 +17,7 @@ class HoursController < ApplicationController
      openclose = JsonOpenClose.new
     begin
       new_hours = check_params[:hours]
+      # Build into our json format {day: "Monday", opentime: "10A", closetime: "11P"} etc
       new_json  = []
       new_hours.each do |hr|
         new_json << ({ day: hr[:day], opentime: hr[:opentime], closetime: hr[:closetime] })
@@ -37,8 +38,10 @@ class HoursController < ApplicationController
   end
 
   def createlogin
-    user = User.find_by(username: params[:username])
-    if user && user.authenticate(params[:password])
+    juser =  JsonUser.new
+    user = juser.find_by_name(params[:username])
+    puts user
+    if user && juser.test_password(params[:password], user.pwhash)
       session[:user_id] = user.id
       flash[:notice] = "Logged in sucessfully!"
       timenow = Time.now
@@ -62,15 +65,18 @@ class HoursController < ApplicationController
     if pw != pwconfirm
       redirect_to newlogin_path(),  notice: "passwords must match."
     end
-    current_user ||= User.find(session[:user_id])
+    juser = JsonUser.new
+    current_user ||= juser.find_by_id(session[:user_id])
 
-    if current_user.update(password: pw)
+    if juser.update_pw(current_user.username, params[:password])
       session[:user_id] = nil
-      Rails.logger.info("#{current_user.username} changed password at #{timenow}")
+      Rails.logger.info("#{current_user.username} changed password at #{Time.now}")
       redirect_to newlogin_path(),  notice: "password changed"
+      nil
     else
-      Rails.logger.info("#{current_user.username} Error changing password #{timenow}")
+      Rails.logger.info("#{current_user.username} Error changing password #{Time.now}")
       redirect_to newlogin_path(),  notice: "Error occured. Password not updated"
+      nil
     end
   end
 

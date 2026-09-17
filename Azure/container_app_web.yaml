@@ -15,7 +15,7 @@ properties:
       - name: luckyweb
         image: himilou/luckyweb:Prod1
         # Override the Docker entrypoint so the existing database is not initialized.
-        command: ["bash", "bin/azure-entrypoint"]
+        # command: ["bash", "bin/azure-entrypoint"]
         args: ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
         env:
           - name: RAILS_ENV
