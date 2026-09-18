@@ -15,8 +15,9 @@ properties:
     containers:
       - name: ruby-rake-container
         image: himilou/luckytasks:Prod1  # Replace with your Docker image path
-        command: ["bash", "bin/azure-entrypoint"]
-        args: ["bundle", "exec", "rake", "images:run_all"]
+        # command: ["bash", "bin/azure-entrypoint"] # this used to copy the sqllite database into the container. The rake job never needed this
+        # args: ["bundle", "exec", "rake", "images:run_all"]
+        command: ["bundle", "exec", "rake", "images:run_all"]
         env:
           - name: RAILS_ENV
             value: production
