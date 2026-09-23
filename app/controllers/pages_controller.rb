@@ -27,9 +27,6 @@ class PagesController < ApplicationController
     @image_name = params[:filename].to_s
   end
 
-  def menu
-  end
-
   def press
   end
 

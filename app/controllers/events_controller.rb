@@ -30,15 +30,14 @@ class EventsController < ApplicationController
     filename = params[:filename].to_s
     @image_name = File.basename(filename)
     image_file = DIR_PATH.join(filename)
-    
+
     unless @image_name.present? && File.file?(image_file)
       raise ActionController::RoutingError, "Not Found"
-      Rails.logger.error "Error: Image file not found at #{image_file}"
+      Rails.logger.error "Events Controller Error: Image file not found at #{image_file}"
     end
-    
+
     event_data = JSON.parse(File.read(EVENTS_JSON_PATH.to_s)).find { |event| event["filename"] == @image_name }
     @event_date = event_data&.dig("date")
     @event_bandname = event_data&.dig("bandnames")
   end
 end
-

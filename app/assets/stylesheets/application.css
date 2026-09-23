@@ -411,6 +411,16 @@ img {
   color: red;
 }
 
+.menu-main {
+  text-align: center;
+  padding-top: 18px;
+  box-sizing: border-box; 
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+
 @media (max-width: 720px) {
   .page-shell {
     width: min(92vw, 100%);
