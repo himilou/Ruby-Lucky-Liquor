@@ -13,7 +13,7 @@ Rails.application.configure do
   config.consider_all_requests_local = false
 
   # Turn on fragment caching in view templates.
-  config.action_controller.perform_caching = false
+  config.action_controller.perform_caching = true
 
   # Cache assets for far-future expiry since they are all digest stamped.
   config.public_file_server.headers = { "cache-control" => "public, max-age=#{1.year.to_i}" }
@@ -21,10 +21,10 @@ Rails.application.configure do
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.asset_host = "http://assets.example.com"
 
-  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
+  # Staging is served directly over HTTP on port 80 in Docker.
   config.assume_ssl = false
 
-  # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
+  # HTTPS enforcement belongs in production behind the TLS-terminating proxy.
   config.force_ssl = false
 
   # Skip http-to-https redirect for the default health check endpoint.
@@ -33,17 +33,15 @@ Rails.application.configure do
   # Log to STDOUT with the current request id as a default log tag.
   # config.log_tags = [ :request_id ]
   # config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
-  file_logger = ActiveSupport::Logger.new(Rails.root.join("log", "#{Rails.env}.log"))
-  file_logger.formatter = config.log_formatter
-
-  if ENV["RAILS_LOG_TO_STDOUT"] == "true"
-    stdout_logger = ActiveSupport::Logger.new(STDOUT)
-    stdout_logger.formatter = config.log_formatter
-    config.logger = ActiveSupport::TaggedLogging.new(
-      ActiveSupport::BroadcastLogger.new(file_logger, stdout_logger)
-    )
+   if ENV["RAILS_LOG_TO_STDOUT"] == "true"
+    logger           = ActiveSupport::Logger.new(STDOUT)
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
   else
-    config.logger = ActiveSupport::TaggedLogging.new(file_logger)
+    # This forces Rails back to standard file logging (/rails/log/production.log)
+    logger           = ActiveSupport::Logger.new(Rails.root.join("log", "#{Rails.env}.log"))
+    logger.formatter = config.log_formatter
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
   # Change to "debug" to log everything (including potentially personally-identifiable information!)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
@@ -85,6 +83,9 @@ Rails.application.configure do
 
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
+
+  # Use local storage for Active Storage (see config/storage.yml for options).
+  config.active_storage.service = :local
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [

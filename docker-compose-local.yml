@@ -21,8 +21,15 @@ services:
 
 
 volumes:
+  # rails_log:           # Persists development/production logs
+  # if creating volumes directory name will be appended to volume name. THIS DOES NOT HAPPEN WITH EXISTING
   lucky_rails_storage:       # Persists your SQLite database (Rails 8 defaults SQLite here)
     external: true
-  # rails_log:           # Persists development/production logs
+  
   lucky_rails_public_assets:
     external: true
+  #rails_storage:       # Persists your SQLite database (Rails 8 defaults SQLite here)
+  #  external: true
+  
+  #rails_public_assets:
+  # external: true

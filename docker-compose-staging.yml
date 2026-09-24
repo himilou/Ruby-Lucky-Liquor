@@ -1,0 +1,16 @@
+# depreciated version: '3.8'
+
+services:
+  luckyweb:
+    environment:
+      - RAILS_ENV=staging
+      # Docker will pull this value from your local terminal or .env file
+      - RAILS_MASTER_KEY=${STAGING_RAILS_MASTER_KEY}
+
+  luckytasks:
+    environment:
+      - RAILS_ENV=staging
+      # Docker will pull this value from your local terminal or .env file
+      - RAILS_MASTER_KEY=${STAGING_RAILS_MASTER_KEY}
+
+  

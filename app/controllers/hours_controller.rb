@@ -4,23 +4,29 @@ class HoursController < ApplicationController
   before_action :require_user, only: [ :main, :changepassword, :update_hours ]
 
 
+
+
   def main
     @welcome = "hours main page"
-    @hours = OpenCloseTime.order(:id)
+    jsonhours = JsonOpenClose.new
+    @current = jsonhours.get
+    @form_fields = @current
   end
 
   def update_hours
-    OpenCloseTime.transaction do
-      hours_params.each do |day, values|
-        record = OpenCloseTime.find_by(day: day)
-        record ||= OpenCloseTime.new(day: day)
-        record.update!(opentime: values[:opentime], closetime: values[:closetime], day: day)
+     openclose = JsonOpenClose.new
+    begin
+      new_hours = check_params[:hours]
+      # Build into our json format {day: "Monday", opentime: "10A", closetime: "11P"} etc
+      new_json  = []
+      new_hours.each do |hr|
+        new_json << ({ day: hr[:day], opentime: hr[:opentime], closetime: hr[:closetime] })
       end
+      openclose.update(new_json)
+      redirect_to hours_path, notice: "Hours updated successfully."
+    rescue ActiveRecord::RecordInvalid => error
+      redirect_to hours_path, alert: "Hours could not be updated: #{error.message}"
     end
-
-    redirect_to hours_path, notice: "Hours updated successfully."
-  rescue ActiveRecord::RecordInvalid => error
-    redirect_to hours_path, alert: "Hours could not be updated: #{error.message}"
   end
 
   def new
@@ -32,8 +38,10 @@ class HoursController < ApplicationController
   end
 
   def createlogin
-    user = User.find_by(username: params[:username])
-    if user && user.authenticate(params[:password])
+    juser =  JsonUser.new
+    user = juser.find_by_name(params[:username])
+    puts user
+    if user && juser.test_password(params[:password], user.pwhash)
       session[:user_id] = user.id
       flash[:notice] = "Logged in sucessfully!"
       timenow = Time.now
@@ -57,15 +65,18 @@ class HoursController < ApplicationController
     if pw != pwconfirm
       redirect_to newlogin_path(),  notice: "passwords must match."
     end
-    current_user ||= User.find(session[:user_id])
+    juser = JsonUser.new
+    current_user ||= juser.find_by_id(session[:user_id])
 
-    if current_user.update(password: pw)
+    if juser.update_pw(current_user.username, params[:password])
       session[:user_id] = nil
-      Rails.logger.info("#{current_user.username} changed password at #{timenow}")
+      Rails.logger.info("#{current_user.username} changed password at #{Time.now}")
       redirect_to newlogin_path(),  notice: "password changed"
+      nil
     else
-      Rails.logger.info("#{current_user.username} Error changing password #{timenow}")
+      Rails.logger.info("#{current_user.username} Error changing password #{Time.now}")
       redirect_to newlogin_path(),  notice: "Error occured. Password not updated"
+      nil
     end
   end
 
@@ -76,16 +87,28 @@ class HoursController < ApplicationController
   end
 
   private
-
-  def hours_params
-    params.require(:hours).permit(
-      "Monday" => [ :opentime, :closetime ],
-      "Tuesday" => [ :opentime, :closetime ],
-      "Wednesday" => [ :opentime, :closetime ],
-      "Thursday" => [ :opentime, :closetime ],
-      "Friday" => [ :opentime, :closetime ],
-      "Saturday" => [ :opentime, :closetime ],
-      "Sunday" => [ :opentime, :closetime ]
-    )
+  def check_params
+    params.permit(hours: [ :day, :opentime, :closetime ])
   end
 end
+
+=begin
+  def main
+    @welcome = "hours main page"
+    @hours = OpenCloseTime.order(:id)
+  end
+
+  def update_hours
+    OpenCloseTime.transaction do
+      hours_params.each do |day, values|
+        record = OpenCloseTime.find_by(day: day)
+        record ||= OpenCloseTime.new(day: day)
+        record.update!(opentime: values[:opentime], closetime: values[:closetime], day: day)
+      end
+    end
+
+    redirect_to hours_path, notice: "Hours updated successfully."
+  rescue ActiveRecord::RecordInvalid => error
+    redirect_to hours_path, alert: "Hours could not be updated: #{error.message}"
+  end
+=end

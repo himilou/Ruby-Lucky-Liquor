@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "rdbg",
+      "name": "Debug Google Drive Image Sync",
+      "request": "launch",
+      "command": "${workspaceFolder}/bin/rake",
+      "script": "images:sync_from_google_drive",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "RAILS_ENV": "development"
+      }
+    },
+    {
+      "type": "rdbg",
+      "name": "Debug Event Image JSON Parser",
+      "request": "launch",
+      "command": "${workspaceFolder}/bin/rake",
+      "script": "images:parse_to_json",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "RAILS_ENV": "development"
+      }
+    }
+  ]
+}

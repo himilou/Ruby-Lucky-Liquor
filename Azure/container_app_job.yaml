@@ -1,0 +1,48 @@
+type: Microsoft.App/jobs
+properties:
+  environmentId: /subscriptions/24738afd-7c58-43fb-a685-c5e3a0dfbee7/resourceGroups/luckyliquor/providers/Microsoft.App/managedEnvironments/luckyliquor-env
+  configuration:
+    triggerType: Schedule
+    replicaTimeout: 1800
+    replicaRetryLimit: 1
+    secrets:
+      - name: rails-master-key
+        value: bootstrap-placeholder
+    scheduleTriggerConfig:
+      cronExpression: "0 */6 * * *"  # Runs every 6 hours (00:00, 06:00, 12:00, 18:00 UTC)
+      concurrencyPolicy: Forbid        # Prevents overlapping job runs
+  template:
+    containers:
+      - name: ruby-rake-container
+        image: himilou/luckytasks:Prod1  # Replace with your Docker image path
+        # command: ["bash", "bin/azure-entrypoint"] # this used to copy the sqllite database into the container. The rake job never needed this
+        # args: ["bundle", "exec", "rake", "images:run_all"]
+        command: ["bundle", "exec", "rake", "images:run_all"]
+        env:
+          - name: RAILS_ENV
+            value: production
+          - name: RAILS_MASTER_KEY
+            secretRef: rails-master-key
+          - name: RAILS_LOG_TO_STDOUT
+            value: "true"
+        resources:
+          cpu: 0.25
+          memory: 0.5Gi
+        volumeMounts:
+          - volumeName: jobs-database-volume
+            mountPath: /rails/storage              # Source database share
+          - volumeName: jobs-assets-volume
+            mountPath: /rails/public/event_img              # Rails.root/public/event_img
+          - volumeName: jobs-log-volume
+            mountPath: /rails/log
+    volumes:
+      - name: jobs-database-volume
+        storageName: luckyliquor-storage-mount
+        storageType: AzureFile
+      - name: jobs-assets-volume
+        storageName: luckyliquor-file-mount             # Environment storage for lucky-rails-public-assets
+        storageType: AzureFile
+      - name: jobs-log-volume
+        storageName: luckyliquor-log-mount               # Azure File share: lucky-rails-log
+        storageType: AzureFile
+

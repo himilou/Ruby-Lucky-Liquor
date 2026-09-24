@@ -1,8 +1,11 @@
 class PagesController < ApplicationController
   before_action :set_page_title
 
+
   def home
-    @hours = OpenCloseTime.all
+    # this is for db based hours @hours = OpenCloseTime.all
+    jsonhours = JsonOpenClose.new
+    @hours = jsonhours.get
   end
 
   def gallery
@@ -22,9 +25,6 @@ class PagesController < ApplicationController
 
   def galleryimage
     @image_name = params[:filename].to_s
-  end
-
-  def menu
   end
 
   def press
