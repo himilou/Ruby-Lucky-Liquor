@@ -13,7 +13,7 @@ properties:
   template:
     containers:
       - name: luckyweb
-        image: himilou/luckyweb:Prod1
+        image: himilou/luckyweb:Prod2-1
         # Override the Docker entrypoint so the existing database is not initialized.
         # command: ["bash", "bin/azure-entrypoint"]
         args: ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
@@ -36,6 +36,8 @@ properties:
             mountPath: /rails/public/event_img
           - volumeName: web-log-volume
             mountPath: /rails/log
+          - volumeName: web-menu-volume
+            mountPath: /rails/public/menu
     volumes:
       - name: web-storage-volume
         storageName: luckyliquor-storage-mount
@@ -45,6 +47,9 @@ properties:
         storageType: AzureFile
       - name: web-log-volume
         storageName: luckyliquor-log-mount
+        storageType: AzureFile
+      - name: web-menu-volume
+        storageName: luckyliquor-menu-mount
         storageType: AzureFile
     scale:
       minReplicas: 1

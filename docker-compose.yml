@@ -18,7 +18,7 @@ services:
     depends_on:
       luckyweb-permissions:
         condition: service_completed_successfully
-    image: himilou/luckyweb:Prod1
+    image: himilou/luckyweb:Prod2-1
     build: .
 
     command: bundle exec rails server -b 0.0.0.0
@@ -37,7 +37,10 @@ services:
       - type: volume
         source: lucky_rails_public_assets
         target: /rails/public/event_img
-
+      # Menu image file storage
+      - type: volume
+        source: lucky_rails_menu
+        target: /rails/public/menu
       - lucky_rails_log:/rails/log
       # Anonymous volumes: Keep noisy logs and temporary files in Docker.
       #- /rails_app/tmp
@@ -77,6 +80,8 @@ volumes:
   lucky_rails_storage:       # Persists your SQLite database (Rails 8 defaults SQLite here)
     external: true 
   lucky_rails_public_assets: #Persists files stored in /public/event_image
+    external: true
+  lucky_rails_menu:
     external: true
 
   

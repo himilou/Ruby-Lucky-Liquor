@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Deploy the luckyweb production image as an Azure Container App.
 # Run this script from the Azure directory:
-#   source ./container_app_web.sh
+#   bash ./container_app_web.sh
 
 RESOURCE_GROUP="luckyliquor"
 LOCATION="westus"
@@ -53,6 +53,8 @@ ensure_storage() {
 # These registrations map the existing Azure File shares to Container Apps.
 ensure_storage "luckyliquor-storage-mount" "lucky-rails-storage"
 ensure_storage "luckyliquor-log-mount" "lucky-rails-log"
+ensure_storage "luckyliquor-menu-mount" "lucky-rails-menu"
+ensure_storage "luckyliquor-file-mount" "lucky-rails-public-assets"
 
 # Create the app once, or update it on later runs.
 if az containerapp show --name "$APP_NAME" --resource-group "$RESOURCE_GROUP" >/dev/null 2>&1; then
