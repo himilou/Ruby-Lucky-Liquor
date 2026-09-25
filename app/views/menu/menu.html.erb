@@ -1,38 +1,14 @@
 <% content_for :title, "Menu | Lucky Liquor" %>
 
 <section class="content-page">
+
   <div class="section-block">
     <h1>Menu</h1>
     <p class="center-text ">Solid pours, easygoing service, and a dive-bar menu designed for good company and no fuss.</p>
-    <!-- picture menu -->
       <div class="info-grid">
-        <article class="info-card">
-          <%= link_to menu_image_path(menuname: "menufront09-12-26.jpg"), class: "event-image-link" do %>
-              <%= image_tag "/menu/menufront09-12-26.jpg", alt: "menu front", class: "event-image" %>
-            <% end %>
-        </article>
-        <article class="info-card">
-            <%= link_to menu_image_path(menuname: "menurear09-12-26.jpg"), class: "event-image-link" do %>
-              <%= image_tag "/menu/menurear09-12-26.jpg", alt: "menu back", class: "event-image" %>
-            <% end %>
-        </article>
-        <article class="info-card">
-            <%= link_to menu_image_path(menuname: "brunch08-22-25.jpg"), class: "event-image-link" do %>
-              <%= image_tag "/menu/brunch08-22-25.jpg", alt: "spirits menu back", class: "event-image" %>
-            <% end %>
-        </article>
-        <article class="info-card">
-          <%= link_to menu_image_path(menuname: "spirits07-12-26.jpg"), class: "event-image-link" do %>
-              <%= image_tag "/menu/spirits07-12-26.jpg", alt: "spirits menu front", class: "event-image" %>
-            <% end %>
-        </article>
-      </div>
-  </div>
-  <div class="section-block">
-    <h4>Test auto menu</h4>
-      <div class="info-grid">
-        <% @current_menu.each do |mname|%>
+        <% @current_menu.each_with_index do |mname, index|%>
           <article class="info-card">
+            <p class="event-date"><%= MenuController::MENU_NAME[index] %></p>
             <%= link_to menu_image_path(menuname: mname), class: "event-image-link" do %>
               <%= image_tag "/menu/#{mname}", alt: "menu front", class: "event-image" %>
             <% end %>

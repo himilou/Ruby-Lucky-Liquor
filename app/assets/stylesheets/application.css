@@ -56,6 +56,11 @@ img {
   filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.25));
 }
 
+.notice {
+  text-align: center;
+  color: red;
+}
+
 .main-nav {
   display: flex;
   flex-wrap: wrap;
@@ -82,6 +87,10 @@ img {
 
 .site-main {
   padding: 24px 0 18px;
+}
+
+.site-main h1 {
+  text-align: center;
 }
 
 .hero {
@@ -111,10 +120,19 @@ img {
   color: var(--muted);
   font-size: 0.82rem;
 }
-
-.site-main h1 {
-  text-align: center;
+.hero-photo {
+  margin-top: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 18px 40px var(--shadow);
 }
+
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .hours-main {
   text-align: center;
   padding-top: 18px;
@@ -170,19 +188,6 @@ img {
   font-weight: 600;
   color: var(--muted);
   margin-top: 12px;
-}
-
-.hero-photo {
-  margin-top: 8px;
-  border-radius: 4px;
-  overflow: hidden;
-  box-shadow: 0 18px 40px var(--shadow);
-}
-
-.hero-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .content-page {
@@ -309,6 +314,15 @@ img {
   color: var(--muted);
 }
 
+
+.menu-main {
+  text-align: center;
+  padding-top: 18px;
+  box-sizing: border-box; 
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -405,20 +419,6 @@ img {
 .center-text {
   text-align: center;
 }
-
-.notice {
-  text-align: center;
-  color: red;
-}
-
-.menu-main {
-  text-align: center;
-  padding-top: 18px;
-  box-sizing: border-box; 
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 
 
 @media (max-width: 720px) {

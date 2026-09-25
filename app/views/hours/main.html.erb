@@ -28,10 +28,10 @@
                     <%= hidden_field_tag "hours[][day]", row['day'] %>
                 </td>
                 <td>
-                    <%= text_field_tag "hours[][opentime]", row['opentime'], class: "form-control" %>
+                    <%= text_field_tag "hours[][opentime]", row['opentime'], class: "hours-input-narrow" %>
                 </td>
                 <td>
-                    <%= text_field_tag "hours[][closetime]", row['closetime'], class: "form-control" %>
+                    <%= text_field_tag "hours[][closetime]", row['closetime'], class: "hours-input-narrow" %>
                 </td>
                 </tr>
             <% end %>

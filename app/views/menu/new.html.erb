@@ -6,27 +6,18 @@
 <% end %>
 <h1>Edit Menu Images</h1>
 <!-- picture menu -->
-<div class="info-grid">
-    <article class="info-card">
-        <%= link_to menu_image_path(menuname: "menufront.jpg"), class: "event-image-link" do %>
-        <%= image_tag "/menu/menufront.jpg", alt: "menu front", class: "event-image" %>
-        <% end %>
-    </article>
-    <article class="info-card">
-        <%= link_to menu_image_path(menuname: "menurear.jpg"), class: "event-image-link" do %>
-        <%= image_tag "/menu/menurear.jpg", alt: "menu back", class: "event-image" %>
-        <% end %>
-    </article>
+<div class="section-block">
+<h1>Menu</h1>
+    <div class="info-grid">
+    <% @current_menu.each_with_index do |mname, index|%>
         <article class="info-card">
-        <%= link_to menu_image_path(menuname: "spiritfront.jpg"), class: "event-image-link" do %>
-        <%= image_tag "/menu/spiritfront.jpg", alt: "spirits menu front", class: "event-image" %>
+        <p class="event-date"><%= MenuController::MENU_NAME[index] %></p>
+        <%= link_to menu_image_path(menuname: mname), class: "event-image-link" do %>
+            <%= image_tag "/menu/#{mname}", alt: "menu front", class: "event-image" %>
         <% end %>
-    </article>
-    <article class="info-card">
-        <%= link_to menu_image_path(menuname: "spiritrear.jpg"), class: "event-image-link" do %>
-        <%= image_tag "/menu/spiritrear.jpg", alt: "spirits menu back", class: "event-image" %>
-        <% end %>
-    </article>
+        </article>
+    <% end %>
+    </div>
 </div>
 
 
@@ -36,27 +27,27 @@
     <%= form_with url: menu_create_path, method: :post,  local: true do |form| %>
     <div>
         <h4>Front Menu Image</h4>
-        <%= form.hidden_field :image_name_front, value: "menufront.jpg" %>
+        <%= form.hidden_field :image_name_front, value: MenuController::MENU_NAME[0] %>
         <%= form.label :image, "Upload Front Menu Image" %></br>
         <%= form.file_field :image_menu_front %>
     </div>
     <div>
         <h4>Rear Menu Image</h4>
-        <%= form.hidden_field :image_name_rear, value: "menurear.jpg" %>
+        <%= form.hidden_field :image_name_rear, value: MenuController::MENU_NAME[1]  %>
         <%= form.label :image, "Upload Back Menu Image" %></br>
         <%= form.file_field :image_menu_rear %>
     </div>
         <div>
         <h4>Spirit Menu Front Image</h4>
-        <%= form.hidden_field :image_Name_spirit_front, value: "spiritfront.jpg" %>
-        <%= form.label :image, "Upload Front Spirit Menu Image" %></br>
-        <%= form.file_field :image_spirit_front %>
+        <%= form.hidden_field :image_name_brunch, value: MenuController::MENU_NAME[2] %>
+        <%= form.label :image, "Upload Brunch Menu Image" %></br>
+        <%= form.file_field :image_brunch %>
     </div>
         <div>
             <h4>Spirit Menu Rear Image</h4>
-        <%= form.hidden_field :image_name_spirit_rear, value: "spiritrear.jpg" %>
-        <%= form.label :image, "Upload Rear Spirit Menu Image" %></br>
-        <%= form.file_field :image_spirit_rear %>
+        <%= form.hidden_field :image_name_spirit, value: MenuController::MENU_NAME[3]  %>
+        <%= form.label :image, "Upload Spirit Menu Image" %></br>
+        <%= form.file_field :image_spirit %>
     </div>
     <%= form.submit "Save" %>
     <% end %>
