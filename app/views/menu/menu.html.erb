@@ -8,9 +8,9 @@
       <div class="info-grid">
         <% @current_menu.each_with_index do |mname, index|%>
           <article class="info-card">
-            <p class="event-date"><%= MenuController::MENU_NAME[index] %></p>
-            <%= link_to menu_image_path(menuname: mname), class: "event-image-link" do %>
-              <%= image_tag "/menu/#{mname}", alt: "menu front", class: "event-image" %>
+            <p class="menu-label"><%= MenuController::MENU_NAME[index] %></p>
+            <%= link_to menu_image_path(menuname: mname), class: "menu-image-link" do %>
+              <%= image_tag "/menu/#{mname}", alt: "menu front", class: "menu-image" %>
             <% end %>
           </article>
         <% end %>
