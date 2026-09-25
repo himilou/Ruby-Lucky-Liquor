@@ -1,32 +1,20 @@
 <% content_for :title, "Menu | Lucky Liquor" %>
 
 <section class="content-page">
+
   <div class="section-block">
     <h1>Menu</h1>
     <p class="center-text ">Solid pours, easygoing service, and a dive-bar menu designed for good company and no fuss.</p>
-    <!-- picture menu -->
-        <div class="info-grid">
-      <article class="info-card">
-         <%= link_to menu_image_path(menuname: "menufront.jpg"), class: "event-image-link" do %>
-            <%= image_tag "/menu/menufront.jpg", alt: "menu front", class: "event-image" %>
-          <% end %>
-      </article>
-      <article class="info-card">
-          <%= link_to menu_image_path(menuname: "menurear.jpg"), class: "event-image-link" do %>
-            <%= image_tag "/menu/menurear.jpg", alt: "menu back", class: "event-image" %>
-          <% end %>
-      </article>
-         <article class="info-card">
-         <%= link_to menu_image_path(menuname: "spiritfront.jpg"), class: "event-image-link" do %>
-            <%= image_tag "/menu/spiritfront.jpg", alt: "spirits menu front", class: "event-image" %>
-          <% end %>
-      </article>
-      <article class="info-card">
-          <%= link_to menu_image_path(menuname: "spiritrear.jpg"), class: "event-image-link" do %>
-            <%= image_tag "/menu/spiritrear.jpg", alt: "spirits menu back", class: "event-image" %>
-          <% end %>
-      </article>
-    </div>
+      <div class="info-grid">
+        <% @current_menu.each_with_index do |mname, index|%>
+          <article class="info-card">
+            <p class="menu-label"><%= MenuController::MENU_NAME[index] %></p>
+            <%= link_to menu_image_path(menuname: mname), class: "menu-image-link" do %>
+              <%= image_tag "/menu/#{mname}", alt: "menu front", class: "menu-image" %>
+            <% end %>
+          </article>
+        <% end %>
+      </div>
   </div>
     <div class="info-grid">
       <article class="info-card">
