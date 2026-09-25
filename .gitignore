@@ -44,6 +44,8 @@ lucky_rails_public_assets_backup.tar.gz
 lucky_rails_storage_backup.tar.gz
 luckyweb_image.tar
 
+# Ignore credentials 
+/config/credentials/*
 /config/credentials/staging.key
 
 /config/credentials/production.key

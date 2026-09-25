@@ -1,12 +1,15 @@
 
 # Controller for menu amd menu images. Menu Files are stored in /public/menu to allow rails style URL linking
 class MenuController < ApplicationController
-  DIR_PATH = Rails.root.join("public/menu")
-
   before_action :set_page_title
   before_action :require_user, only: [ :new, :create ]
 
+  DIR_PATH = Rails.root.join("public/menu")
+  MENU_COUNT = 4
+  MENU_NAME = [ "menufront", "menurear", "brunch", "spirits" ]
+
   def menu
+    @current_menu = get_existing_menu()
   end
 
   def image
@@ -52,6 +55,29 @@ class MenuController < ApplicationController
     end
 
     redirect_to menu_new_path, notice: "Menu images processed."
+  end
+
+  def get_existing_menu
+    added_files = 0
+    menu_files = Array.new(MENU_COUNT)
+    files = Dir.children(DIR_PATH)
+
+    files.each do |fname|
+      MENU_NAME.each_with_index do |m, index|
+        if fname.include?(m)
+          menu_files[index] = fname
+          added_files += 1
+          break
+        end
+      end
+    end
+
+    if added_files < MENU_COUNT
+      outstring = "MenuController: found #{added_files} out of expected #{MENU_COUNT}"
+      puts outstring
+      Rails.logger.warn(outstring)
+    end
+    menu_files
   end
 
   private
