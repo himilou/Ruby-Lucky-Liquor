@@ -65,7 +65,7 @@ class MenuController < ApplicationController
           end
         end
         # Build its new unique name i.e. menufront08-23-26.jpg
-        filename = filename + Time.now.strftime("%m-%d-%y") + ".jpg"
+        filename = filename + Time.now.strftime("%m-%d-%y-%H-%M-%S") + ".jpg"
         filepath = DIR_PATH.join(filename)
         data = File.binread(uploaded_file)
         File.open(filepath, "wb") do |file|
