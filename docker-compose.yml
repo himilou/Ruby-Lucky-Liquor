@@ -2,17 +2,34 @@
 
 services:
   luckyweb-permissions:
-    image: alpine:latest
+    image: himilou/luckyweb:Prod2-1
+    build: .
     user: "0:0"
-    # command sets permissions on /public/event_img so that the rake tasks have access
-    command: >-
-      sh -c "chown -R 1000:1000 /volume/event_img &&
-      chmod -R u+rwX,g+rwX /volume/event_img && 
-      chown -R 1000:1000 /dbvol && 
-      chmod -R u+rwX,g+rwX /dbvol"
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        chown -R 1000:1000 /rails/public/event_img &&
+        chmod -R u+rwX,g+rwX /rails/public/event_img &&
+        chown -R 1000:1000 /rails/storage &&
+        chmod -R u+rwX,g+rwX /rails/storage &&
+        chown -R 1000:1000 /rails/public/menu &&
+        chmod -R u+rwX,g+rwX /rails/public/menu
     volumes:
-      - lucky_rails_public_assets:/volume
-      - lucky_rails_storage:/dbvol
+      - type: volume
+        source: lucky_rails_public_assets
+        target: /rails/public/event_img
+        volume:
+          nocopy: false
+      - type: volume
+        source: lucky_rails_storage
+        target: /rails/storage
+        volume:
+          nocopy: false
+      - type: volume
+        source: lucky_rails_menu
+        target: /rails/public/menu
+        volume:
+          nocopy: false
 
   luckyweb:
     depends_on:
@@ -30,10 +47,9 @@ services:
       # Mount codebase for live reload (development only)
       #- .:/rails
       
-      #NOTE THESE VOLUMES SHOULD ALREADY EXIST
-      # Named volume: Persists the SQLite database.
+      # JSON data used by the Rails app.
       - lucky_rails_storage:/rails/storage
-      # Named volume: Persists compiled assets.
+      # Named volume: Persists event images.
       - type: volume
         source: lucky_rails_public_assets
         target: /rails/public/event_img
@@ -41,7 +57,9 @@ services:
       - type: volume
         source: lucky_rails_menu
         target: /rails/public/menu
+      # Log files
       - lucky_rails_log:/rails/log
+      
       # Anonymous volumes: Keep noisy logs and temporary files in Docker.
       #- /rails_app/tmp
       #- /rails_app/log
@@ -54,6 +72,9 @@ services:
 
   # Second container build for rake tasks to gather event flyers    
   luckytasks:
+    depends_on:
+      luckyweb-permissions:
+        condition: service_completed_successfully
     image: himilou/luckytasks:Prod1
     # build: .
     # By default, this container will do nothing until you call it,
@@ -71,17 +92,21 @@ services:
       - type: volume
         source: lucky_rails_public_assets
         target: /rails/public/event_img
+      - lucky_rails_storage:/rails/storage
       - lucky_rails_log:/rails/log
       
 volumes:
   lucky_rails_log:           # Persists development/production logs
-    external: true
+  #  external: true
   # if creating volumes directory name will be appended to volume name. THIS DOES NOT HAPPEN WITH EXISTING
-  lucky_rails_storage:       # Persists your SQLite database (Rails 8 defaults SQLite here)
-    external: true 
+  lucky_rails_storage:
+    name: lucky_rails_storage
+  #  external: true
   lucky_rails_public_assets: #Persists files stored in /public/event_image
-    external: true
+    name: lucky_rails_public_assets
+  #  external: true
   lucky_rails_menu:
-    external: true
+    name: lucky_rails_menu
+   # external: true
 
   
