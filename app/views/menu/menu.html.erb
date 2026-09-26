@@ -5,7 +5,7 @@
   <div class="section-block">
     <h1>Menu</h1>
     <p class="center-text ">Solid pours, easygoing service, and a dive-bar menu designed for good company and no fuss.</p>
-      <div class="info-grid">
+      <div class="menu-info-grid">
         <% @current_menu.each_with_index do |mname, index|%>
           <article class="info-card">
             <p class="menu-label"><%= MenuController::MENU_NAME[index] %></p>

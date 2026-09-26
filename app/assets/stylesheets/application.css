@@ -370,6 +370,12 @@ img {
   margin-left: auto;
   margin-right: auto;
 }
+.menu-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 24px;
+}
 
 
 .menu-input-info-grid {
@@ -480,6 +486,10 @@ img {
 @media (max-width: 720px) {
   .page-shell {
     width: min(92vw, 100%);
+  }
+  .menu-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   .main-nav {
