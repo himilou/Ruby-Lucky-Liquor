@@ -340,7 +340,7 @@ img {
 .menu-image {
   width: 100%;
   height: 300px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 8px;
   margin-bottom: 14px;
   display: block;
@@ -374,6 +374,12 @@ img {
   border-radius: 4px;
   margin-left: auto;
   margin-right: auto;
+}
+.menu-info-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 24px;
 }
 
 
@@ -482,11 +488,22 @@ img {
 }
 
 
-@media (max-width: 720px) {
+@media (max-width: 800px) {
   .page-shell {
     width: min(92vw, 100%);
   }
+  .menu-info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    }
+  }
 
+  @media (max-width: 700px) {
+  .page-shell {
+    width: min(92vw, 100%);
+  }
+  .menu-info-grid {
+    grid-template-columns: repeat(1, 1fr);
+    }
   .main-nav {
     gap: 12px 14px;
   }
@@ -505,3 +522,4 @@ img {
     justify-content: center;
   }
 }
+
