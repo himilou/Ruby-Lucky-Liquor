@@ -33,7 +33,7 @@ Rails.application.configure do
   # Log to STDOUT with the current request id as a default log tag.
   # config.log_tags = [ :request_id ]
   # config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
-   if ENV["RAILS_LOG_TO_STDOUT"] == "true"
+  if ENV["RAILS_LOG_TO_STDOUT"] == "true"
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger    = ActiveSupport::TaggedLogging.new(logger)

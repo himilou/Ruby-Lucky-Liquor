@@ -7,13 +7,11 @@
 namespace :images do
   desc "Download new images from google drive and jsonify"
   task run_all: :environment do
-
     d = DateTime.now
     d.strftime("%d/%m/%Y %H:%M")
     dstr = "Rake run_all task starting at: #{d}"
     puts dstr
     Rails.logger.info dstr
-    
     # Define tasks in sequence
     tasks = [
       "images:sync_from_google_drive",
