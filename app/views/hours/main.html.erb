@@ -1,6 +1,8 @@
 
 
-
+<% if flash[:notice] %>
+  <div class="notice" "data-turbolinks": "false"><h2><%= flash[:notice] %> </h2></div>
+<% end %>
 <div class="hours-main">
     <h2>current hours</h2>
     <ul class="hours" aria-label="current operating hours">
@@ -41,4 +43,4 @@
     <% end %>
 </div>
 
-<%= button_to "Log Out", logout_path, method: :delete %>
+<%= button_to "Log In-Out", change_path, method: :get %>

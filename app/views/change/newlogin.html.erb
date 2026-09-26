@@ -23,24 +23,29 @@
     </div>
     <% end %>
 <% else%>
-<h3>logoff - change password</h3>
+<h3>change password</h3>
     <%= form_with url: changepassword_path, local: true do |form| %>
       <div>
         <%= form.label :password %>
         <%= form.password_field :password %>
       </div>
       <div>
-        <%= form.label "confirm password" %>
+        <%= form.label "confirm pw" %>
         <%= form.password_field :confirmpassword %>
       </div>
-
-      <div>
-        <%= form.submit "change password" %>
-      </div>
+    <div>
+    <br/>
+    <%= form.submit "change password" %>
+    </div>
     <% end %>
 <br/>
 <br/>
-<%= button_to "Log Out", logout_path, method: :delete %>
+<div class="button-container">
+  <%= button_to "Change Hours", hours_path, method: :get %>
+  <%= button_to "Change Menu", menu_new_path, method: :get %>
+  <%= button_to "Log Out", logout_path, method: :delete %>
+</div>
+
 <% end %>
 
 
