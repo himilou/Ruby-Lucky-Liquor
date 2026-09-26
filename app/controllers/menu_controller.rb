@@ -6,7 +6,7 @@ class MenuController < ApplicationController
 
   DIR_PATH = Rails.root.join("public/menu")
   MENU_COUNT = 4
-  MENU_NAME = [ "menufront", "menurear", "brunch", "spirits" ]
+  MENU_NAME = [ "food", "drinks", "brunch", "spirits" ]
   ALLOWED_EXTENSIONS = [ ".jpg", ".jpeg" ]
 
   def menu
