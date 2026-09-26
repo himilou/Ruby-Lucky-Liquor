@@ -497,7 +497,7 @@ img {
     }
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 700px) {
   .page-shell {
     width: min(92vw, 100%);
   }
