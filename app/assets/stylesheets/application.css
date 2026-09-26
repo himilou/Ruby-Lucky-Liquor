@@ -92,6 +92,11 @@ img {
 .site-main h1 {
   text-align: center;
 }
+.button-container {
+  display: flex;
+  justify-content: space-evenly;
+  width: 80%;                 
+}
 
 .hero {
   display: grid;

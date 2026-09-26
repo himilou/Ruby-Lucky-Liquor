@@ -19,17 +19,21 @@ Rails.application.routes.draw do
   get "events", to: "events#events"
   get "events/image", to: "events#image", as: :events_image
 
-  # Hours controller routes and login /logoff
-  get "hours", to: "hours#main"
+  # Hours controller routes
+  get "hours", to: "hours#main", as: :hours
   patch "hours", to: "hours#update_hours", as: :update_hours
   get "hours/main"
   get "hours/create"
 
+  # Change controller routes
+  get "change", to: "change#newlogin"
+  post "change/newlogin", to: "change#createlogin"
+
   # Following allows controller redirects
-  get  "newlogin",  to: "hours#newlogin"
-  post "newlogin",  to: "hours#createlogin"
-  post "changepassword", to: "hours#changepassword"
-  delete "logout", to: "hours#destroy"
+  get  "newlogin",  to: "change#newlogin"
+  post "newlogin",  to: "change#createlogin"
+  post "changepassword", to: "change#changepassword"
+  delete "logout", to: "change#destroy"
   end
 
 
