@@ -488,7 +488,7 @@ img {
 }
 
 
-@media (max-width: 720px) {
+@media (max-width: 800px) {
   .page-shell {
     width: min(92vw, 100%);
   }
@@ -497,6 +497,13 @@ img {
     }
   }
 
+  @media (max-width: 720px) {
+  .page-shell {
+    width: min(92vw, 100%);
+  }
+  .menu-info-grid {
+    grid-template-columns: repeat(1, 1fr);
+    }
   .main-nav {
     gap: 12px 14px;
   }
@@ -515,3 +522,4 @@ img {
     justify-content: center;
   }
 }
+
