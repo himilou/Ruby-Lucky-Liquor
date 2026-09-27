@@ -57,14 +57,13 @@ class MenuController < ApplicationController
 
         filename = File.basename(submitted_filename.to_s)
         next if filename.blank?
-        # Find the file to remove
+        # Find the lod menu files to remove
         existing_files.each do |exist|
           if exist.include?(filename)
             files_to_remove.push(exist)
-            break
           end
         end
-        # Build its new unique name i.e. menufront08-23-26-12-00-01.jpg
+        # Build its new unique name i.e. menufront08-23-26-12-00-59.jpg
         filename = filename + Time.now.strftime("%m-%d-%y-%H-%M-%S") + ".jpg"
         filepath = DIR_PATH.join(filename)
         data = File.binread(uploaded_file)
@@ -80,9 +79,14 @@ class MenuController < ApplicationController
     end
 
     # Remove the old menu files that were replaced
-    files_to_remove.each do |rm|
-      toremove = DIR_PATH.join(rm)
-      File.delete(toremove) if File.exist?(toremove)
+    begin
+      files_to_remove.each do |rm|
+        toremove = DIR_PATH.join(rm)
+        File.delete(toremove) if File.exist?(toremove)
+      end
+    rescue StandardError => error
+      errstring = "MenuController: Error deleting old menu files #{error.message}"
+      Rails.logger.error(errstring)
     end
 
     redirect_to menu_new_path, notice: "Menu images processed."
