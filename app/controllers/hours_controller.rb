@@ -14,16 +14,22 @@ class HoursController < ApplicationController
   end
 
   def update_hours
-     openclose = JsonOpenClose.new
+    openclose = JsonOpenClose.new
+    new_hours = check_params[:hours]
+    if new_hours.empty?
+      alertstring = "HoursController: Hours could not be updated: Invalid string length"
+      Rails.logger.warn(alertstring)
+      redirect_to hours_path, alert: alertstring
+      return # Manditory prevent double redirect
+    end
     begin
-      new_hours = check_params[:hours]
       # Build into our json format {day: "Monday", opentime: "10A", closetime: "11P"} etc
       new_json  = []
       new_hours.each do |hr|
         new_json << ({ day: hr[:day], opentime: hr[:opentime], closetime: hr[:closetime] })
       end
       openclose.update(new_json)
-      redirect_to hours_path, notice: "Hours updated successfully."
+      redirect_to hours_path, alert: "Hours updated successfully."
     rescue ActiveRecord::RecordInvalid => error
       redirect_to hours_path, alert: "Hours could not be updated: #{error.message}"
     end
@@ -32,7 +38,26 @@ class HoursController < ApplicationController
 
   private
   def check_params
-    params.permit(hours: [ :day, :opentime, :closetime ])
+    # Grab the raw input array size before filtering
+    original_count = params.dig(:hours)&.size || 0
+
+    permitted = params.permit(hours: [ :day, :opentime, :closetime ])
+
+    if permitted[:hours].is_a?(Array)
+      # 3. Filter out the invalid elements
+      permitted[:hours].reject! do |hour_hash|
+        hour_hash[:day].to_s.length > 9 ||
+          hour_hash[:opentime].to_s.length > 4 ||
+          hour_hash[:closetime].to_s.length > 4
+      end
+
+      # Check if the array filtered anything out (or if unpermitted elements were dropped)
+      if permitted[:hours].size != original_count
+        # Empty the entire array so nothing gets saved
+        permitted[:hours] = []
+      end
+    end
+  permitted
   end
 end
 
