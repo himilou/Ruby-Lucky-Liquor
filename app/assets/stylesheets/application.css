@@ -207,6 +207,7 @@ img {
   border-radius: 12px;
   padding: 26px 22px;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+  text-align: center;
 }
 
 .content-page h1,
@@ -416,6 +417,22 @@ img {
   letter-spacing: 0.08em;
   font-size: 0.7rem;
 }
+/*About page */
+.iframe-container {
+  display: inline-flex !important; /* Changes from 'flex' to 'inline-flex' */
+  justify-content: center;
+  align-items: center;
+  width: 100%; /* Forces the flex container to fill the block width */
+  margin: 0 auto;
+}
+
+/* Ensure the iframe doesn't have conflicting block margins */
+.iframe-container iframe {
+  display: block;
+  max-width: 100%;
+}
+
+
 
 .site-footer {
   border-top: 1px solid var(--line);
