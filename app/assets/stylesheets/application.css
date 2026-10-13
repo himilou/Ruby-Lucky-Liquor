@@ -524,6 +524,7 @@ img {
   .main-nav {
     gap: 12px 14px;
   }
+}
 
   .main-nav a {
     font-size: 0.62rem;
@@ -539,12 +540,12 @@ img {
     justify-content: center;
   }
   .JHC a {
-  background-color: red;
+  background-color: grey;
   color: white;
   padding: 1em 1.5em;
   text-decoration: none;
   text-align: center;
   border: 2px solid var(--line);
 }
-}
+
 
