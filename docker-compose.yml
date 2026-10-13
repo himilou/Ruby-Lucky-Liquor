@@ -66,7 +66,7 @@ services:
     environment:
       - RAILS_ENV=production
       - PORT=80
-      - RAILS_LOG_TO_STDOUT=false
+      - RAILS_LOG_TO_STDOUT=true
       # Docker will pull this value from your local terminal or .env file
       - RAILS_MASTER_KEY=${PRODUCTION_RAILS_MASTER_KEY}
 
